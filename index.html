@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fenton Forge - AI Website Builder</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white; 
+      min-height: 100vh;
+      line-height: 1.6; 
+    }
+    
+    /* Floating Nav */
+    .floating-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; }
+    .nav-toggle { 
+      width: 50px; 
+      height: 50px; 
+      background: rgba(26, 26, 46, 0.95); 
+      border: 1px solid rgba(255,255,255,0.2); 
+      border-radius: 12px; 
+      cursor: pointer; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 5px; 
+      backdrop-filter: blur(10px); 
+    }
+    .nav-toggle span { width: 24px; height: 2px; background: white; transition: all 0.3s; }
+    .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    .nav-menu { 
+      position: fixed; 
+      top: 0; 
+      left: -320px; 
+      width: 300px; 
+      height: 100vh; 
+      background: rgba(26, 26, 46, 0.98); 
+      border-right: 1px solid rgba(255,255,255,0.1); 
+      padding: 2rem; 
+      transition: left 0.3s; 
+      overflow-y: auto; 
+      z-index: 999;
+    }
+    .nav-menu.active { left: 0; }
+    .nav-logo { 
+      display: flex; 
+      align-items: center; 
+      gap: 0.8rem; 
+      color: white; 
+      text-decoration: none; 
+      font-size: 1.3rem; 
+      margin-bottom: 2rem; 
+      padding-bottom: 1rem; 
+      border-bottom: 1px solid rgba(255,255,255,0.1); 
+    }
+    .nav-logo span { font-size: 1.8rem; }
+    .nav-section { margin-bottom: 1.5rem; }
+    .nav-section h4 { color: #667eea; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .nav-section a { 
+      display: block; 
+      color: rgba(255,255,255,0.8); 
+      text-decoration: none; 
+      padding: 0.4rem 0; 
+      font-size: 0.95rem; 
+    }
+    .nav-section a:hover { color: #667eea; }
+    
+    /* Hero */
+    .hero { 
+      min-height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      padding: 6rem 2rem 2rem; 
+      text-align: center; 
+    }
+    .hero-content { max-width: 900px; }
+    .hero-logo { 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 1rem; 
+      margin-bottom: 2rem; 
+    }
+    .logo-icon { font-size: 3rem; }
+    .logo-text { text-align: left; }
+    .logo-text strong { 
+      display: block; 
+      font-size: 1.8rem; 
+      letter-spacing: 2px; 
+      background: linear-gradient(135deg, #667eea, #764ba2); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+    }
+    .logo-text span { font-size: 0.9rem; opacity: 0.8; }
+    .hero-title { font-size: 3.5rem; margin-bottom: 1rem; }
+    .hero-title .highlight { display: inline-block; margin: 0 0.3rem; }
+    .hero-title .highlight:nth-child(1) { color: #667eea; }
+    .hero-title .highlight:nth-child(2) { color: #764ba2; }
+    .hero-title .highlight:nth-child(3) { color: #f093fb; }
+    .hero-subtitle { 
+      font-size: 1.3rem; 
+      opacity: 0.9; 
+      margin-bottom: 2rem; 
+      max-width: 600px; 
+      margin-left: auto; 
+      margin-right: auto; 
+    }
+    
+    /* USP Grid */
+    .usp-grid { 
+      display: grid; 
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 1.5rem; 
+      margin: 2rem 0; 
+    }
+    .usp-item { 
+      background: rgba(255,255,255,0.05); 
+      border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 12px; 
+      padding: 1.5rem; 
+      transition: transform 0.3s; 
+    }
+    .usp-item:hover { 
+      transform: translateY(-5px); 
+      background: rgba(255,255,255,0.1); 
+    }
+    .usp-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+    .usp-item strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; }
+    .usp-item span { font-size: 0.8rem; opacity: 0.7; }
+    
+    /* CTA */
+    .hero-cta { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 1rem; 
+      background: linear-gradient(135deg, #667eea, #764ba2); 
+      color: white; 
+      padding: 1.2rem 2.5rem; 
+      border-radius: 50px; 
+      text-decoration: none; 
+      font-size: 1.2rem; 
+      margin: 2rem 0; 
+      animation: pulse 2s infinite; 
+    }
+    @keyframes pulse { 
+      0%, 100% { box-shadow: 0 0 0 0 rgba(102,126,234,0.4); } 
+      50% { box-shadow: 0 0 0 20px rgba(102,126,234,0); } 
+    }
+    .cta-icon { font-size: 1.5rem; }
+    .cta-text { text-align: left; }
+    .cta-text strong { display: block; font-size: 1.3rem; }
+    .cta-text span { font-size: 0.85rem; opacity: 0.9; }
+    
+    /* VCSE Note */
+    .vcse-note { 
+      background: rgba(67, 233, 123, 0.1); 
+      border: 1px solid rgba(67, 233, 123, 0.3); 
+      padding: 1rem 1.5rem; 
+      border-radius: 8px; 
+      display: inline-block; 
+      margin-top: 1rem; 
+    }
+    
+    /* Categories */
+    .categories { 
+      padding: 4rem 2rem; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+    }
+    .categories h2 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
+    .category-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+      gap: 1.5rem; 
+    }
+    .category-card { 
+      background: rgba(255,255,255,0.05); 
+      border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 12px; 
+      padding: 2rem; 
+      text-align: center; 
+      color: white; 
+      text-decoration: none; 
+      transition: all 0.3s; 
+    }
+    .category-card:hover { 
+      transform: translateY(-5px); 
+      border-color: #667eea; 
+    }
+    .cat-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .category-card h3 { margin-bottom: 0.5rem; }
+    .category-card p { font-size: 0.9rem; opacity: 0.7; }
+    
+    /* Comparison */
+    .comparison { 
+      padding: 4rem 2rem; 
+      max-width: 1000px; 
+      margin: 0 auto; 
+    }
+    .comparison h2 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
+    .compare-table { width: 100%; border-collapse: collapse; }
+    .compare-table th, .compare-table td { 
+      padding: 1rem; 
+      text-align: left; 
+      border-bottom: 1px solid rgba(255,255,255,0.1); 
+    }
+    .compare-table th { background: rgba(255,255,255,0.05); }
+    .ff-col { color: #667eea; font-weight: bold; }
+    
+    /* Footer */
+    .simple-footer { 
+      text-align: center; 
+      padding: 2rem; 
+      border-top: 1px solid rgba(255,255,255,0.1); 
+      opacity: 0.7; 
+    }
+    .footer-links { margin-top: 1rem; }
+    .footer-links a { color: white; margin: 0 1rem; text-decoration: none; }
+    
+    /* Cookie Banner */
+    #cookieBanner { 
+      display: none; 
+      position: fixed; 
+      bottom: 0; 
+      left: 0; 
+      right: 0; 
+      background: rgba(26, 26, 46, 0.98); 
+      border-top: 1px solid rgba(255,255,255,0.1); 
+      padding: 1rem 2rem; 
+      z-index: 10000; 
+      justify-content: space-between; 
+      align-items: center; 
+      flex-wrap: wrap; 
+      gap: 1rem; 
+    }
+    #cookieBanner p { margin: 0; font-size: 0.9rem; }
+    #cookieBanner a { color: #667eea; }
+    .cookie-buttons { display: flex; gap: 0.5rem; }
+    .cookie-buttons button { 
+      padding: 0.5rem 1rem; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      border: none; 
+    }
+    .cookie-buttons button:first-child { 
+      background: #667eea; 
+      color: white; 
+    }
+    .cookie-buttons button:last-child { 
+      background: transparent; 
+      color: white; 
+      border: 1px solid rgba(255,255,255,0.3); 
+    }
+    
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2rem; }
+      .usp-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Navigation -->
+  <nav class="floating-nav">
+    <button class="nav-toggle" onclick="toggleNav()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <div class="nav-menu" id="navMenu">
+      <a href="/" class="nav-logo">
+        <span>🔨</span>
+        <strong>Fenton Forge</strong>
+      </a>
+      
+      <div class="nav-section">
+        <h4>Build</h4>
+        <a href="/builder/questionnaire.html">AI Website Builder</a>
+        <a href="/migration.html">Migrate Site</a>
+        <a href="/pricing.html">Pricing</a>
+      </div>
+      
+      <div class="nav-section">
+        <h4>Categories</h4>
+        <a href="/categories/my-own">Personal</a>
+        <a href="/categories/small-business">Small Business</a>
+        <a href="/categories/voluntary-organisation">Voluntary</a>
+        <a href="/categories/corporate">Corporate</a>
+        <a href="/categories/agency">Agency</a>
+      </div>
+      
+      <div class="nav-section">
+        <h4>Showcase</h4>
+        <a href="/showcase.html">Customer Sites</a>
+      </div>
+      
+      <div class="nav-section">
+        <h4>Our Products</h4>
+        <a href="https://fenton-creative.co">Fenton Creative</a>
+        <a href="https://dataprune.co">DataPrune</a>
+        <a href="https://valuecompanion.co">ValueCompanion</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-logo">
+        <span class="logo-icon">🔨</span>
+        <div class="logo-text">
+          <strong>FENTON FORGE</strong>
+          <span>The Definitive AI Website Builder</span>
+        </div>
+      </div>
+      
+      <h1 class="hero-title">
+        <span class="highlight">AI-Powered.</span>
+        <span class="highlight">Edge-Native.</span>
+        <span class="highlight">UK Sovereign.</span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        The world's first website builder with <strong>AEGIS Secure Architecture</strong>. 
+        You own your data. Always.
+      </p>
+      
+      <div class="usp-grid">
+        <div class="usp-item">
+          <span class="usp-icon">🤖</span>
+          <strong>AI Creation</strong>
+          <span>10 questions → Site in 5 min</span>
+        </div>
+        <div class="usp-item">
+          <span class="usp-icon">⚡</span>
+          <strong>Edge-Native</strong>
+          <span>Fastest global speeds</span>
+        </div>
+        <div class="usp-item">
+          <span class="usp-icon">🔒</span>
+          <strong>Own Your Data</strong>
+          <span>UK sovereign hosting</span>
+        </div>
+        <div class="usp-item">
+          <span class="usp-icon">🛡️</span>
+          <strong>AEGIS Protected</strong>
+          <span>Patent-pending security</span>
+        </div>
+      </div>
+      
+      <a href="/builder/questionnaire.html" class="hero-cta">
+        <span class="cta-icon">🚀</span>
+        <div class="cta-text">
+          <strong>Start AI Build</strong>
+          <span>No credit card required</span>
+        </div>
+      </a>
+      
+      <p class="vcse-note">
+        🎁 <strong>FREE for UK Charities & Voluntary Organisations</strong> with turnover under £500,000/year
+      </p>
+    </div>
+  </header>
+
+  <!-- Categories -->
+  <section class="categories">
+    <h2>Choose Your Category</h2>
+    <div class="category-grid">
+      <a href="/categories/my-own" class="category-card">
+        <span class="cat-icon">👤</span>
+        <h3>Personal</h3>
+        <p>Portfolio, blog, or personal site</p>
+      </a>
+      <a href="/categories/small-business" class="category-card">
+        <span class="cat-icon">🏪</span>
+        <h3>Small Business</h3>
+        <p>Local business presence</p>
+      </a>
+      <a href="/categories/voluntary-organisation" class="category-card">
+        <span class="cat-icon">🤝</span>
+        <h3>Voluntary</h3>
+        <p>Charities & community groups</p>
+      </a>
+      <a href="/categories/corporate" class="category-card">
+        <span class="cat-icon">🏢</span>
+        <h3>Corporate</h3>
+        <p>Enterprise & public sector</p>
+      </a>
+      <a href="/categories/agency" class="category-card">
+        <span class="cat-icon">🎨</span>
+        <h3>Agency</h3>
+        <p>Web agencies & freelancers</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="comparison">
+    <h2>Why Fenton Forge?</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="ff-col">Fenton Forge</th>
+          <th>WordPress</th>
+          <th>Wix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>AI-Powered Build</td><td class="ff-col">✅ Native</td><td>❌ Plugins</td><td>❌ No</td></tr>
+        <tr><td>Edge-Native Hosting</td><td class="ff-col">✅ Built-in</td><td>❌ No</td><td>❌ US-only</td></tr>
+        <tr><td>UK Sovereign Data</td><td class="ff-col">✅ Yes</td><td>❌ No</td><td>❌ No</td></tr>
+        <tr><td>AEGIS Security</td><td class="ff-col">✅ Patent</td><td>❌ No</td><td>❌ No</td></tr>
+        <tr><td>Migration Time</td><td class="ff-col">✅ 5 minutes</td><td>Weeks</td><td>Manual</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Footer -->
+  <footer class="simple-footer">
+    <p>&copy; 2026 Fenton Creative Ltd. Patent Pending GB2620950.2</p>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/cookies.html">Cookies</a>
+    </div>
+  </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookieBanner">
+    <p>🍪 We use cookies to improve your experience. <a href="/cookies.html">Learn more</a></p>
+    <div class="cookie-buttons">
+      <button onclick="acceptCookies()">Accept</button>
+      <button onclick="declineCookies()">Decline</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Navigation toggle
+    function toggleNav() {
+      document.querySelector('.nav-toggle').classList.toggle('active');
+      document.getElementById('navMenu').classList.toggle('active');
+    }
+    
+    // Close nav when clicking outside
+    document.addEventListener('click', function(e) {
+      const nav = document.querySelector('.floating-nav');
+      if (!nav.contains(e.target)) {
+        document.querySelector('.nav-toggle').classList.remove('active');
+        document.getElementById('navMenu').classList.remove('active');
+      }
+    });
+    
+    // Cookie banner
+    function acceptCookies() {
+      localStorage.setItem('cookiesAccepted', 'true');
+      document.getElementById('cookieBanner').style.display = 'none';
+    }
+    function declineCookies() {
+      localStorage.setItem('cookiesAccepted', 'false');
+      document.getElementById('cookieBanner').style.display = 'none';
+    }
+    if (!localStorage.getItem('cookiesAccepted')) {
+      document.getElementById('cookieBanner').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>

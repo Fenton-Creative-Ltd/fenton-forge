@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Website Builder - Fenton Forge</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white; 
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 3rem; }
+    .header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header p { opacity: 0.8; }
+    
+    .progress-bar { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
+    .progress-bar::before { content: ''; position: absolute; top: 15px; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.2); z-index: 0; }
+    .step { width: 32px; height: 32px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 1; transition: all 0.3s; }
+    .step.active { background: #667eea; border-color: #667eea; }
+    .step.completed { background: #43e97b; border-color: #43e97b; }
+    
+    .question-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; display: none; }
+    .question-card.active { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .question-card h3 { margin-bottom: 1.5rem; font-size: 1.3rem; }
+    .options { display: flex; flex-direction: column; gap: 0.75rem; }
+    .option { 
+      background: rgba(255, 255, 255, 0.05); 
+      border: 2px solid rgba(255, 255, 255, 0.1); 
+      border-radius: 12px; 
+      padding: 1rem 1.5rem; 
+      cursor: pointer; 
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .option:hover { border-color: #667eea; background: rgba(102, 126, 234, 0.1); }
+    .option.selected { border-color: #667eea; background: rgba(102, 126, 234, 0.2); }
+    .option-icon { font-size: 1.5rem; }
+    .option-text { flex: 1; }
+    .option-text strong { display: block; margin-bottom: 0.2rem; }
+    .option-text span { font-size: 0.85rem; opacity: 0.7; }
+    
+    .text-input { 
+      width: 100%; 
+      background: rgba(255, 255, 255, 0.1); 
+      border: 1px solid rgba(255, 255, 255, 0.2); 
+      border-radius: 8px; 
+      padding: 1rem; 
+      color: white; 
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    .text-input:focus { outline: none; border-color: #667eea; }
+    
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+    button { 
+      background: linear-gradient(135deg, #667eea, #764ba2); 
+      color: white; 
+      border: none; 
+      padding: 1rem 2rem; 
+      border-radius: 8px; 
+      font-size: 1rem; 
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.9; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button.secondary { background: transparent; border: 2px solid rgba(255,255,255,0.3); }
+    
+    .results { display: none; text-align: center; padding: 3rem 2rem; }
+    .results.active { display: block; }
+    .results-icon { font-size: 5rem; margin-bottom: 1rem; }
+    .results h2 { margin-bottom: 1rem; }
+    .results p { opacity: 0.8; margin-bottom: 2rem; }
+    .site-preview { 
+      background: rgba(255, 255, 255, 0.05); 
+      border-radius: 16px; 
+      padding: 2rem; 
+      margin: 2rem 0; 
+      text-align: left;
+    }
+    .site-preview h4 { margin-bottom: 1rem; color: #667eea; }
+    .preview-item { padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    
+    .back-link { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.5rem; 
+      color: rgba(255,255,255,0.7); 
+      text-decoration: none; 
+      margin-bottom: 2rem;
+    }
+    .back-link:hover { color: #667eea; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <div class="header">
+      <h1>🤖 AI Website Builder</h1>
+      <p>Answer 10 questions. Get a custom website.</p>
+    </div>
+    
+    <div class="progress-bar" id="progressBar">
+      <div class="step active">1</div>
+      <div class="step">2</div>
+      <div class="step">3</div>
+      <div class="step">4</div>
+      <div class="step">5</div>
+    </div>
+    
+    <!-- Question 1 -->
+    <div class="question-card active" data-step="1">
+      <h3>What type of website do you need?</h3>
+      <div class="options">
+        <div class="option" onclick="selectOption(this, 'type', 'personal')">
+          <span class="option-icon">👤</span>
+          <div class="option-text">
+            <strong>Personal</strong>
+            <span>Portfolio, blog, or personal brand</span>
+          </div>
+        </div>
+        <div class="option" onclick="selectOption(this, 'type', 'business')">
+          <span class="option-icon">🏪</span>
+          <div class="option-text">
+            <strong>Business</strong>
+            <span>Company website with services</span>
+          </div>
+        </div>
+        <div class="option" onclick="selectOption(this, 'type', 'voluntary')">
+          <span class="option-icon">🤝</span>
+          <div class="option-text">
+            <strong>Voluntary Organisation</strong>
+            <span>Charity or community group</span>
+          </div>
+        </div>
+        <div class="option" onclick="selectOption(this, 'type', 'ecommerce')">
+          <span class="option-icon">🛒</span>
+          <div class="option-text">
+            <strong>E-Commerce</strong>
+            <span>Online store with payments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Question 2 -->
+    <div class="question-card" data-step="2">
+      <h3>What's your organisation name?</h3>
+      <input type="text" class="text-input" id="orgName" placeholder="Enter your organisation or site name..." onkeyup="updateAnswer('name', this.value)">
+      <div class="nav-buttons">
+        <button class="secondary" onclick="prevStep()">Back</button>
+        <button onclick="nextStep()">Next</button>
+      </div>
+    </div>
+    
+    <!-- Question 3 -->
+    <div class="question-card" data-step="3">
+      <h3>What's the primary purpose?</h3>
+      <div class="options">
+        <div class="option" onclick="selectOption(this, 'purpose', 'inform')">
+          <span class="option-icon">📢</span>
+          <div class="option-text">
+            <strong>Inform</strong>
+            <span>Share information and news</span>
+          </div>
+        </div>
+        <div class="option" onclick="selectOption(this, 'purpose', 'sell')">
+          <span class="option-icon">💰</span>
+          <div class="option-text">
+            <strong>Sell Products</strong>
+            <span>E-commerce and online sales</span>
+          </div>
+        </div>
+        <div class="option" onclick="selectOption(this, 'purpose', 'leads')">
+          <span class="option-icon">📞</span>
+          <div class="option-text">
+            <strong>Generate Leads</strong>
+            <span>Contact forms and enquiries</span>
+          </div>
+        </div>
+        <div class="option" onclick="selectOption(this, 'purpose', 'community')">
+          <span class="option-icon">👥</span>
+          <div class="option-text">
+            <strong>Build Community</strong>
+            <span>Membership and engagement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Question 4 -->
+    <div class="question-card" data-step="4">
+      <h3>Do you have an existing website to migrate?</h3>
+      <div class="options">
+        <div class="option" onclick="selectOption(this, 'migrate', 'yes')">
+          <span class="option-icon">🔄</span>
+          <div class="option-text">
+            <strong>Yes, migrate my site</strong>
+            <span>We'll import your existing content</span>
+          </div>
+        </div>
+        <div class="option" onclick="selectOption(this, 'migrate', 'no')">
+          <span class="option-icon">✨</span>
+          <div class="option-text">
+            <strong>No, start fresh</strong>
+            <span>Build a brand new website</span>
+          </div>
+        </div>
+      </div>
+      <div id="migrateUrl" style="display: none; margin-top: 1rem;">
+        <input type="url" class="text-input" placeholder="Enter your current website URL..." onkeyup="updateAnswer('migrateUrl', this.value)">
+      </div>
+    </div>
+    
+    <!-- Question 5 -->
+    <div class="question-card" data-step="5">
+      <h3>What's your email?</h3>
+      <input type="email" class="text-input" id="email" placeholder="your@email.com" onkeyup="updateAnswer('email', this.value)">
+      <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;">We'll send your site preview and next steps here.</p>
+      <div class="nav-buttons">
+        <button class="secondary" onclick="prevStep()">Back</button>
+        <button onclick="generateSite()">Generate My Website</button>
+      </div>
+    </div>
+    
+    <!-- Results -->
+    <div class="results" id="results">
+      <div class="results-icon">🎉</div>
+      <h2>Your Website Plan is Ready!</h2>
+      <p>We've analysed your requirements and created a custom website blueprint.</p>
+      
+      <div class="site-preview" id="sitePreview">
+        <!-- Generated content goes here -->
+      </div>
+      
+      <button onclick="window.location.href='/builder/index.html'">Open Builder</button>
+      <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+        Or <a href="/pricing.html" style="color: #667eea;">view pricing</a> to go live
+      </p>
+    </div>
+    
+    <div class="nav-buttons" id="navButtons">
+      <button class="secondary" onclick="prevStep()" style="visibility: hidden;">Back</button>
+      <button onclick="nextStep()" id="nextBtn">Next</button>
+    </div>
+  </div>
+  
+  <script>
+    let currentStep = 1;
+    const totalSteps = 5;
+    const answers = {};
+    
+    function updateProgress() {
+      const steps = document.querySelectorAll('.step');
+      steps.forEach((step, index) => {
+        step.classList.remove('active', 'completed');
+        if (index + 1 < currentStep) step.classList.add('completed');
+        else if (index + 1 === currentStep) step.classList.add('active');
+      });
+    }
+    
+    function showStep(step) {
+      document.querySelectorAll('.question-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      document.querySelector(`[data-step="${step}"]`).classList.add('active');
+      
+      // Show/hide nav buttons based on step
+      const navButtons = document.getElementById('navButtons');
+      if (step === 2 || step === 5) navButtons.style.display = 'none';
+      else {
+        navButtons.style.display = 'flex';
+        navButtons.querySelector('.secondary').style.visibility = step === 1 ? 'hidden' : 'visible';
+      }
+      
+      updateProgress();
+    }
+    
+    function selectOption(element, key, value) {
+      // Remove selected from siblings
+      element.parentElement.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      answers[key] = value;
+      
+      // Special handling for migrate question
+      if (key === 'migrate') {
+        document.getElementById('migrateUrl').style.display = value === 'yes' ? 'block' : 'none';
+      }
+      
+      // Auto-advance after selection (except last question)
+      if (currentStep < 5) {
+        setTimeout(() => nextStep(), 300);
+      }
+    }
+    
+    function updateAnswer(key, value) {
+      answers[key] = value;
+    }
+    
+    function nextStep() {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    }
+    
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+    
+    function generateSite() {
+      // Hide questions, show results
+      document.querySelectorAll('.question-card').forEach(card => card.style.display = 'none');
+      document.getElementById('navButtons').style.display = 'none';
+      document.querySelector('.progress-bar').style.display = 'none';
+      document.getElementById('results').classList.add('active');
+      
+      // Generate preview content
+      const preview = document.getElementById('sitePreview');
+      const siteType = answers.type || 'business';
+      const siteName = answers.name || 'My Website';
+      
+      const templates = {
+        personal: ['Homepage with bio', 'Portfolio gallery', 'Blog section', 'Contact form'],
+        business: ['Homepage with hero', 'Services/Products', 'About section', 'Contact & Location', 'Testimonials'],
+        voluntary: ['Mission statement', 'Donation integration', 'Events calendar', 'Volunteer signup', 'News section'],
+        ecommerce: ['Product catalog', 'Shopping cart', 'Checkout', 'Payment integration', 'Order management']
+      };
+      
+      const features = templates[siteType] || templates.business;
+      
+      preview.innerHTML = `
+        <h4>📋 ${siteName} - ${siteType.charAt(0).toUpperCase() + siteType.slice(1)} Website</h4>
+        <p style="margin-bottom: 1rem; opacity: 0.8;">Based on your requirements, we'll include:</p>
+        ${features.map(f => `<div class="preview-item">✓ ${f}</div>`).join('')}
+        <div class="preview-item" style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #667eea;">
+          <strong>🎯 Primary Goal:</strong> ${answers.purpose || 'Inform'}
+        </div>
+        <div class="preview-item">
+          <strong>🔄 Migration:</strong> ${answers.migrate === 'yes' ? 'Yes - from ' + (answers.migrateUrl || 'existing site') : 'No - fresh build'}
+        </div>
+        <div class="preview-item">
+          <strong>🛡️ Security:</strong> AEGIS Architecture with UK sovereign hosting
+        </div>
+      `;
+      
+      // Save to localStorage for builder
+      localStorage.setItem('ff_site_plan', JSON.stringify(answers));
+    }
+  </script>
+</body>
+</html>

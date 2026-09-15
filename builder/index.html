@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Website Builder - Fenton Forge</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: #1a1a2e; 
+      color: white; 
+      min-height: 100vh;
+    }
+    .builder-header { 
+      background: rgba(26, 26, 46, 0.98); 
+      padding: 1rem 2rem; 
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .builder-header h1 { font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+    .builder-header .actions { display: flex; gap: 1rem; }
+    button { 
+      background: linear-gradient(135deg, #667eea, #764ba2); 
+      color: white; 
+      border: none; 
+      padding: 0.6rem 1.2rem; 
+      border-radius: 6px; 
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    button.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.3); }
+    
+    .builder-layout { display: grid; grid-template-columns: 280px 1fr 300px; height: calc(100vh - 65px); }
+    
+    /* Sidebar */
+    .sidebar { 
+      background: rgba(26, 26, 46, 0.95); 
+      border-right: 1px solid rgba(255,255,255,0.1);
+      overflow-y: auto;
+    }
+    .sidebar-section { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-header { 
+      padding: 1rem; 
+      cursor: pointer; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      font-weight: 600;
+    }
+    .sidebar-header:hover { background: rgba(255,255,255,0.05); }
+    .sidebar-content { display: none; padding: 0 1rem 1rem; }
+    .sidebar-content.active { display: block; }
+    .component-item { 
+      background: rgba(255,255,255,0.05); 
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 0.8rem;
+      margin-bottom: 0.5rem;
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.2s;
+    }
+    .component-item:hover { border-color: #667eea; background: rgba(102, 126, 234, 0.1); }
+    .component-item:active { cursor: grabbing; }
+    .component-icon { font-size: 1.3rem; }
+    
+    /* Canvas */
+    .canvas { 
+      background: #0f0f1a; 
+      padding: 2rem; 
+      overflow-y: auto;
+      position: relative;
+    }
+    .canvas-area { 
+      min-height: 800px; 
+      background: white; 
+      border-radius: 8px;
+      color: #333;
+      position: relative;
+    }
+    .drop-zone { 
+      border: 2px dashed rgba(102, 126, 234, 0.3); 
+      border-radius: 8px;
+      min-height: 100px;
+      margin: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #667eea;
+      font-size: 0.9rem;
+    }
+    .drop-zone.drag-over { background: rgba(102, 126, 234, 0.1); border-color: #667eea; }
+    
+    /* Properties */
+    .properties { 
+      background: rgba(26, 26, 46, 0.95); 
+      border-left: 1px solid rgba(255,255,255,0.1);
+      padding: 1rem;
+    }
+    .properties h3 { margin-bottom: 1rem; font-size: 0.9rem; text-transform: uppercase; opacity: 0.7; }
+    .prop-group { margin-bottom: 1.5rem; }
+    .prop-group label { display: block; font-size: 0.85rem; margin-bottom: 0.5rem; opacity: 0.8; }
+    .prop-group input, .prop-group select, .prop-group textarea { 
+      width: 100%; 
+      background: rgba(255,255,255,0.1); 
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 0.6rem;
+      color: white;
+      font-family: inherit;
+    }
+    .prop-group textarea { min-height: 100px; resize: vertical; }
+    
+    /* Preview Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; }
+    .modal.active { display: flex; align-items: center; justify-content: center; }
+    .modal-content { 
+      background: white; 
+      width: 90%; 
+      height: 90%; 
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .modal-header { 
+      background: #1a1a2e; 
+      padding: 1rem; 
+      display: flex; 
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 { color: white; }
+    .modal-close { color: white; font-size: 1.5rem; cursor: pointer; }
+    .modal-frame { width: 100%; height: calc(100% - 60px); border: none; }
+  </style>
+</head>
+<body>
+  <div class="builder-header">
+    <h1>🔨 Fenton Forge Builder</h1>
+    <div class="actions">
+      <button class="secondary" onclick="previewSite()">👁️ Preview</button>
+      <button onclick="publishSite()">🚀 Publish</button>
+    </div>
+  </div>
+  
+  <div class="builder-layout">
+    <!-- Components Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-header" onclick="toggleSection(this)">
+          <span>🏗️ Layout</span>
+          <span>▼</span>
+        </div>
+        <div class="sidebar-content active">
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="header">
+            <span class="component-icon">🎯</span>
+            <span>Hero Section</span>
+          </div>
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="navbar">
+            <span class="component-icon">🧭</span>
+            <span>Navigation</span>
+          </div>
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="footer">
+            <span class="component-icon">📋</span>
+            <span>Footer</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-header" onclick="toggleSection(this)">
+          <span>📝 Content</span>
+          <span>▼</span>
+        </div>
+        <div class="sidebar-content">
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="text">
+            <span class="component-icon">📄</span>
+            <span>Text Block</span>
+          </div>
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="image">
+            <span class="component-icon">🖼️</span>
+            <span>Image</span>
+          </div>
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="gallery">
+            <span class="component-icon">🎨</span>
+            <span>Gallery</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-header" onclick="toggleSection(this)">
+          <span>⚡ Interactive</span>
+          <span>▼</span>
+        </div>
+        <div class="sidebar-content">
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="form">
+            <span class="component-icon">📝</span>
+            <span>Contact Form</span>
+          </div>
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="button">
+            <span class="component-icon">🔘</span>
+            <span>CTA Button</span>
+          </div>
+          <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="map">
+            <span class="component-icon">🗺️</span>
+            <span>Map</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Canvas -->
+    <div class="canvas">
+      <div class="canvas-area" id="canvasArea">
+        <div class="drop-zone" 
+             ondrop="drop(event)" 
+             ondragover="allowDrop(event)"
+             ondragenter="dragEnter(event)"
+             ondragleave="dragLeave(event)">
+          Drag components here to build your site
+        </div>
+      </div>
+    </div>
+    
+    <!-- Properties -->
+    <div class="properties">
+      <h3>⚙️ Properties</h3>
+      <div id="propertiesPanel">
+        <p style="opacity: 0.6; font-size: 0.9rem;">Select a component to edit its properties</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Preview Modal -->
+  <div class="modal" id="previewModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>👁️ Preview</h3>
+        <span class="modal-close" onclick="closePreview()">&times;</span>
+      </div>
+      <iframe class="modal-frame" id="previewFrame"></iframe>
+    </div>
+  </div>
+  
+  <script>
+    let selectedComponent = null;
+    let componentCount = 0;
+    const components = {};
+    
+    function toggleSection(header) {
+      const content = header.nextElementSibling;
+      const arrow = header.querySelector('span:last-child');
+      content.classList.toggle('active');
+      arrow.textContent = content.classList.contains('active') ? '▼' : '▶';
+    }
+    
+    function allowDrop(ev) { ev.preventDefault(); }
+    
+    function dragEnter(ev) {
+      ev.target.classList.add('drag-over');
+    }
+    
+    function dragLeave(ev) {
+      ev.target.classList.remove('drag-over');
+    }
+    
+    function drag(ev) {
+      ev.dataTransfer.setData('type', ev.target.dataset.type);
+    }
+    
+    function drop(ev) {
+      ev.preventDefault();
+      ev.target.classList.remove('drag-over');
+      
+      const type = ev.dataTransfer.getData('type');
+      const id = `comp-${++componentCount}`;
+      
+      const componentHTML = getComponentHTML(type, id);
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = componentHTML;
+      wrapper.className = 'dropped-component';
+      wrapper.style.margin = '1rem';
+      wrapper.style.position = 'relative';
+      wrapper.onclick = () => selectComponent(id, type);
+      
+      // Insert before drop zone or append
+      if (ev.target.classList.contains('drop-zone')) {
+        ev.target.parentNode.insertBefore(wrapper, ev.target);
+      } else {
+        ev.target.appendChild(wrapper);
+      }
+      
+      components[id] = { type, data: getDefaultData(type) };
+      selectComponent(id, type);
+    }
+    
+    function getComponentHTML(type, id) {
+      const templates = {
+        header: `<div style="padding: 4rem 2rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-align: center; border-radius: 8px;"><h1 contenteditable="true" onblur="updateData('${id}', 'title', this.innerText)">Your Hero Title</h1><p contenteditable="true" onblur="updateData('${id}', 'subtitle', this.innerText)">Your subtitle here</p></div>`,
+        navbar: `<nav style="padding: 1rem 2rem; background: #333; color: white; border-radius: 8px; display: flex; justify-content: space-between;"><span>Logo</span><span>Home | About | Contact</span></nav>`,
+        text: `<div style="padding: 2rem; background: #f5f5f5; border-radius: 8px;"><p contenteditable="true" onblur="updateData('${id}', 'text', this.innerText)">Click to edit this text block. Add your content here.</p></div>`,
+        image: `<div style="padding: 2rem; text-align: center; background: #f0f0f0; border-radius: 8px;"><div style="width: 100%; height: 200px; background: linear-gradient(135deg, #ddd, #bbb); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #666;">🖼️ Image Placeholder</div></div>`,
+        form: `<form style="padding: 2rem; background: #f5f5f5; border-radius: 8px; max-width: 400px;"><h3>Contact Form</h3><input placeholder="Name" style="width: 100%; margin: 0.5rem 0; padding: 0.5rem;"><input placeholder="Email" style="width: 100%; margin: 0.5rem 0; padding: 0.5rem;"><textarea placeholder="Message" style="width: 100%; margin: 0.5rem 0; padding: 0.5rem;"></textarea><button type="button" style="width: 100%;">Send</button></form>`,
+        button: `<div style="padding: 2rem; text-align: center;"><button style="padding: 1rem 2rem; font-size: 1.1rem;">Click Me</button></div>`,
+        footer: `<footer style="padding: 2rem; background: #333; color: white; text-align: center; border-radius: 8px;"><p>&copy; 2026 Your Company</p></footer>`,
+        gallery: `<div style="padding: 2rem; background: #f5f5f5; border-radius: 8px;"><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;"><div style="aspect-ratio: 1; background: #ddd; border-radius: 4px;"></div><div style="aspect-ratio: 1; background: #ddd; border-radius: 4px;"></div><div style="aspect-ratio: 1; background: #ddd; border-radius: 4px;"></div></div></div>`,
+        map: `<div style="padding: 2rem; background: #e8f4f8; border-radius: 8px; text-align: center;"><div style="height: 200px; background: linear-gradient(135deg, #a8d8ea, #aa96da); border-radius: 4px; display: flex; align-items: center; justify-content: center;">🗺️ Map Placeholder</div></div>`
+      };
+      return templates[type] || templates.text;
+    }
+    
+    function getDefaultData(type) {
+      const defaults = {
+        header: { title: 'Your Hero Title', subtitle: 'Your subtitle here' },
+        text: { text: 'Click to edit this text block' },
+        button: { text: 'Click Me', url: '#' }
+      };
+      return defaults[type] || {};
+    }
+    
+    function selectComponent(id, type) {
+      selectedComponent = id;
+      const panel = document.getElementById('propertiesPanel');
+      
+      const propConfigs = {
+        header: `
+          <div class="prop-group">
+            <label>Title</label>
+            <input type="text" value="${components[id].data.title || ''}" onchange="updateData('${id}', 'title', this.value)">
+          </div>
+          <div class="prop-group">
+            <label>Subtitle</label>
+            <input type="text" value="${components[id].data.subtitle || ''}" onchange="updateData('${id}', 'subtitle', this.value)">
+          </div>
+          <div class="prop-group">
+            <label>Background Color</label>
+            <select onchange="updateStyle('${id}', 'background', this.value)">
+              <option value="gradient">Purple Gradient</option>
+              <option value="blue">Blue</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+        `,
+        text: `
+          <div class="prop-group">
+            <label>Content</label>
+            <textarea onchange="updateData('${id}', 'text', this.value)">${components[id].data.text || ''}</textarea>
+          </div>
+        `,
+        button: `
+          <div class="prop-group">
+            <label>Button Text</label>
+            <input type="text" value="${components[id].data.text || 'Click Me'}" onchange="updateData('${id}', 'text', this.value)">
+          </div>
+          <div class="prop-group">
+            <label>Link URL</label>
+            <input type="text" value="${components[id].data.url || '#'}" onchange="updateData('${id}', 'url', this.value)">
+          </div>
+        `,
+        image: `
+          <div class="prop-group">
+            <label>Image URL</label>
+            <input type="text" placeholder="https://..." onchange="updateData('${id}', 'src', this.value)">
+          </div>
+          <div class="prop-group">
+            <label>Alt Text</label>
+            <input type="text" placeholder="Description" onchange="updateData('${id}', 'alt', this.value)">
+          </div>
+        `
+      };
+      
+      panel.innerHTML = propConfigs[type] || '<p>No editable properties for this component</p>';
+    }
+    
+    function updateData(id, key, value) {
+      if (components[id]) {
+        components[id].data[key] = value;
+      }
+    }
+    
+    function updateStyle(id, property, value) {
+      // Implementation for style updates
+      console.log(`Update ${id} ${property} to ${value}`);
+    }
+    
+    function previewSite() {
+      const canvas = document.getElementById('canvasArea').innerHTML;
+      const previewDoc = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
+            .dropped-component { margin: 0 !important; }
+            .drop-zone { display: none; }
+          </style>
+        </head>
+        <body>
+          ${canvas}
+        </body>
+        </html>
+      `;
+      
+      const frame = document.getElementById('previewFrame');
+      frame.srcdoc = previewDoc;
+      document.getElementById('previewModal').classList.add('active');
+    }
+    
+    function closePreview() {
+      document.getElementById('previewModal').classList.remove('active');
+    }
+    
+    function publishSite() {
+      alert('Site ready for publishing! In production, this would deploy to your domain.');
+    }
+    
+    // Load saved plan from questionnaire
+    const savedPlan = localStorage.getItem('ff_site_plan');
+    if (savedPlan) {
+      const plan = JSON.parse(savedPlan);
+      console.log('Loaded plan:', plan);
+      // Could auto-populate based on plan
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+#!/bin/bash
+cd ~/fenton-forge
+for file in *.html categories/*.html; do
+  if [ -f "$file" ]; then
+    if ! grep -q "venice-bg" "$file"; then
+      sed -i 's/<body>/<body>\n<!-- LIQUID BACKGROUND -->\n<\/div>\n<script>const c=document.getElementById('\''lc'\''),x=c.getContext('\''2d'\'');let w,h,b=[],m={x:0,y:0};function r(){w=c.width=innerWidth;h=c.height=innerHeight}addEventListener('\''resize'\'',r);r();class B{constructor(){this.x=Math.random()*w;this.y=Math.random()*h;this.r=Math.random()*200+100;this.vx=(Math.random()-.5)*.5;this.vy=(Math.random()-.5)*.5;this.c=['\''rgba(102,126,234,0.4)'\'','\''rgba(118,75,162,0.35)'\'','\''rgba(240,147,251,0.3)'\'','\''rgba(79,172,254,0.35)'\'','\''rgba(67,233,123,0.25)'\'','\''rgba(250,112,154,0.3)'\''][Math.floor(Math.random()*6)];this.p=Math.random()*Math.PI*2}u(){this.x+=this.vx;this.y+=this.vy;this.p+=.02;this.cr=this.r+Math.sin(this.p)*30;let dx=m.x-this.x,dy=m.y-this.y;if(Math.sqrt(dx*dx+dy*dy)<300){this.x-=dx*.01;this.y-=dy*.01}if(this.x<-this.r)this.x=w+this.r;if(this.x>w+this.r)this.x=-this.r;if(this.y<-this.r)this.y=h+this.r;if(this.y>h+this.r)this.y=-this.r}d(){let g=x.createRadialGradient(this.x,this.y,0,this.x,this.y,this.cr);g.addColorStop(0,this.c);g.addColorStop(0.5,this.c.replace(\/[\d.]+\)$\/,'\''0.2)'\''));g.addColorStop(1,'\''transparent'\'');x.fillStyle=g;x.beginPath();x.arc(this.x,this.y,this.cr,0,Math.PI*2);x.fill()}}for(let i=0;i<8;i++)b.push(new B);addEventListener('\''mousemove'\'',e=>{m.x=e.clientX;m.y=e.clientY});function a(){x.clearRect(0,0,w,h);x.strokeStyle='\''rgba(255,255,255,0.03)'\'';x.lineWidth=1;for(let i=0;i<b.length;i++)for(let j=i+1;j<b.length;j++){let dx=b[i].x-b[j].x,dy=b[i].y-b[j].y;if(Math.sqrt(dx*dx+dy*dy)<400){x.beginPath();x.moveTo(b[i].x,b[i].y);x.lineTo(b[j].x,b[j].y);x.stroke()}}b.forEach(b=>{b.u();b.d()});requestAnimationFrame(a)}a()<\/script>\n<style>.venice-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)}.venice-canvas{position:absolute;top:0;left:0;width:100%;height:100%;opacity:.6}<\/style>\n<div class="venice-bg"><canvas class="venice-canvas" id="lc"><\/canvas>/' "$file"
+      echo "Added background to $file"
+    fi
+  fi
+done
+echo "All pages updated with Venice background"

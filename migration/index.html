@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Migration | Fenton Forge - Zero-Downtime Migration to Edge</title>
+    <meta name="description" content="Migrate your existing website to Fenton Forge's edge-native architecture. Automatic scraping, optimisation, and deployment.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #05070a;
+            --surface: #0d1117;
+            --border: #21262d;
+            --accent: #00d4ff;
+            --text: #ffffff;
+            --muted: #8b949e;
+            --success: #238636;
+            --warning: #ffc107;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            padding: 1.5rem 5%;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+        
+        .logo span { color: var(--accent); }
+        
+        .back-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        
+        .back-link:hover { color: var(--accent); }
+        
+        /* Hero */
+        .hero {
+            padding: 4rem 5%;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent) 0%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* How It Works - Step by Step */
+        .process {
+            padding: 4rem 5%;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .process-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .process-header h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        
+        .process-timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .timeline-step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            padding: 0 3rem;
+        }
+        
+        .timeline-step:nth-child(odd) .timeline-content {
+            text-align: right;
+        }
+        
+        .timeline-number {
+            width: 60px;
+            height: 60px;
+            background: var(--bg);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timeline-visual {
+            flex: 1;
+            padding: 0 3rem;
+        }
+        
+        .timeline-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .timeline-content p {
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-features {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-step:nth-child(odd) .timeline-features {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .timeline-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        /* Visual Boxes */
+        .visual-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .url-input-demo {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .url-input-demo input {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            border-radius: 6px;
+            color: var(--muted);
+        }
+        
+        .url-input-demo button {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .scraped-preview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .preview-item {
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        
+        .preview-item.header { border-left: 3px solid var(--accent); }
+        .preview-item.content { border-left: 3px solid var(--success); }
+        .preview-item.image { border-left: 3px solid var(--warning); }
+        .preview-item.form { border-left: 3px solid #a371f7; }
+        
+        /* Benefits Section */
+        .benefits {
+            padding: 4rem 5%;
+        }
+        
+        .benefits-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .benefits-header h2 {
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .benefit-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .benefit-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .benefit-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        
+        .metric {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--accent);
+            margin: 1rem 0 0.25rem;
+        }
+        
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Timeline Expectations */
+        .timeline-section {
+            padding: 4rem 5%;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+        
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .timeline-header h2 {
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .delivery-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .delivery-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .delivery-card.featured {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+        
+        .delivery-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .delivery-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .delivery-time {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+        
+        .delivery-card ul {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .delivery-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+        
+        .delivery-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .price span {
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-weight: 400;
+        }
+        
+        /* Migration Form */
+        .migration-form {
+            padding: 4rem 5%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .migration-form h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        
+        .migration-form > p {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+        
+        .form-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-group label .required {
+            color: var(--warning);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .platform-option {
+            position: relative;
+        }
+        
+        .platform-option input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .platform-option label {
+            display: block;
+            padding: 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .platform-option input:checked + label {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        .platform-option label:hover {
+            border-color: var(--border-hover);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 4rem 5%;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+        
+        .faq h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+        
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .faq-question {
+            padding: 1.5rem 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question h3 {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+        
+        .faq-answer.active {
+            max-height: 200px;
+        }
+        
+        .faq-answer p {
+            padding-bottom: 1.5rem;
+            color: var(--muted);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .process-timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-step,
+            .timeline-step:nth-child(even) {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 80px;
+            }
+            
+            .timeline-step:nth-child(odd) .timeline-content {
+                text-align: left;
+            }
+            
+            .timeline-step:nth-child(odd) .timeline-features {
+                align-items: flex-start;
+            }
+            
+            .timeline-number {
+                position: absolute;
+                left: 0;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .platform-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header style="background: #1a1a2e; padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <a href="/" style="text-decoration: none;">
+        <span style="color: #ffd700; font-size: 1.5rem; font-weight: bold;">FENTON FORGE™</span>
+      </a>
+    </div>
+    <nav style="display: flex; gap: 2rem; align-items: center;">
+      <a href="/" style="color: #ccc; text-decoration: none; font-weight: 500;">Home</a>
+      <a href="/categories/personal/" style="color: #ccc; text-decoration: none;">Personal</a>
+      <a href="/categories/small-business/" style="color: #ccc; text-decoration: none;">Small Business</a>
+      <a href="/categories/voluntary-organisation/" style="color: #ccc; text-decoration: none;">Voluntary</a>
+      <a href="/categories/corporate/" style="color: #ccc; text-decoration: none;">Corporate</a>
+      <a href="/builder/" style="background: #ffd700; color: #1a1a2e; padding: 0.5rem 1rem; text-decoration: none; font-weight: bold; border-radius: 4px;">Start Building</a>
+    </nav>
+  </div>
+</header>
+
+
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="logo">FENTON<span>FORGE</span>™</a>
+        <a href="javascript:history.back()" class="back-link">← Back</a>
+    </header>
+    
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>🚀</span> Zero-Downtime Migration
+        </div>
+        <h1>Migrate Your Site to the <span>Edge</span></h1>
+        <p>
+            Already have a website? We'll scrape it, optimise it with DataPrune and ShieldPost, 
+            and deploy it to our UK edge network—in hours, not weeks.
+        </p>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="process">
+        <div class="process-header">
+            <h2>How Migration Works</h2>
+        </div>
+        
+        <div class="process-timeline">
+            <!-- Step 1 -->
+            <div class="timeline-step">
+                <div class="timeline-content">
+                    <h3>1. Submit Your URL</h3>
+                    <p>Enter your existing website address. Our scraper visits and analyses your current site structure, content, and assets.</p>
+                    <ul class="timeline-features">
+                        <li>✓ Works with any platform</li>
+                        <li>✓ No server access needed</li>
+                        <li>✓ Secure & confidential</li>
+                    </ul>
+                </div>
+                <div class="timeline-number">1</div>
+                <div class="timeline-visual">
+                    <div class="visual-box">
+                        <div class="url-input-demo">
+                            <input type="text" value="https://your-current-site.com" readonly>
+                            <button>Analyse</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="timeline-step">
+                <div class="timeline-visual">
+                    <div class="visual-box">
+                        <div class="scraped-preview">
+                            <div class="preview-item header">Hero Section</div>
+                            <div class="preview-item content">Content Blocks</div>
+                            <div class="preview-item image">Images (12)</div>
+                            <div class="preview-item form">Contact Form</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-number">2</div>
+                <div class="timeline-content">
+                    <h3>2. We Scrape & Optimise</h3>
+                    <p>Our system extracts all content, then applies Fenton Forge optimisations automatically:</p>
+                    <ul class="timeline-features">
+                        <li>✓ DataPrune image compression (90% smaller)</li>
+                        <li>✓ ShieldPost form protection</li>
+                        <li>✓ Code minification & cleanup</li>
+                        <li>✓ Tracking scripts removed</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="timeline-step">
+                <div class="timeline-content">
+                    <h3>3. Review & Customise</h3>
+                    <p>You get a preview URL to review the migrated site. Use our builder to make adjustments, or approve as-is.</p>
+                    <ul class="timeline-features">
+                        <li>✓ Side-by-side comparison</li>
+                        <li>✓ Edit in visual builder</li>
+                        <li>✓ Add new components</li>
+                    </ul>
+                </div>
+                <div class="timeline-number">3</div>
+                <div class="timeline-visual">
+                    <div class="visual-box" style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">👁️</div>
+                        <p>Preview URL:<br><code style="color: var(--accent);">preview.fenton-forge.com/abc123</code></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="timeline-step">
+                <div class="timeline-visual">
+                    <div class="visual-box" style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                        <p style="color: var(--success); font-weight: 600;">Live on Edge Network</p>
+                        <p style="font-size: 0.85rem; color: var(--muted);">0.3s load time</p>
+                    </div>
+                </div>
+                <div class="timeline-number">4</div>
+                <div class="timeline-content">
+                    <h3>4. Deploy to Edge</h3>
+                    <p>One-click deployment to our UK edge network. Your custom domain points to the new site. Zero downtime.</p>
+                    <ul class="timeline-features">
+                        <li>✓ SSL certificate auto-generated</li>
+                        <li>✓ DNS switchover support</li>
+                        <li>✓ Old site backup retained</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Benefits -->
+    <section class="benefits">
+        <div class="benefits-header">
+            <h2>What You Gain</h2>
+        </div>
+        
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">⚡</div>
+                <div class="metric">90%</div>
+                <div class="metric-label">Faster Loading</div>
+                <p>Average load time drops from 3+ seconds to 0.3 seconds</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">✂️</div>
+                <div class="metric">90%</div>
+                <div class="metric-label">Less Data</div>
+                <p>DataPrune compression reduces bandwidth costs</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">🛡️</div>
+                <div class="metric">0</div>
+                <div class="metric-label">Security Issues</div>
+                <p>No plugins to patch. No vulnerabilities. Ever.</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">🇬🇧</div>
+                <h3>UK Sovereign</h3>
+                <p>Your data never leaves UK jurisdiction. GDPR compliant by design.</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">🌱</div>
+                <h3>Carbon Reduced</h3>
+                <p>90% less data transfer = 90% lower carbon footprint</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">💰</div>
+                <h3>Lower Costs</h3>
+                <p>No more hosting fees, plugin licenses, or security patches</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Timeline Options -->
+    <section class="timeline-section">
+        <div class="timeline-header">
+            <h2>Choose Your Timeline</h2>
+        </div>
+        
+        <div class="delivery-options">
+            <div class="delivery-card">
+                <h3>Standard Migration</h3>
+                <div class="delivery-time">48 hrs</div>
+                <ul>
+                    <li>✓ Automated scraping</li>
+                    <li>✓ DataPrune optimisation</li>
+                    <li>✓ ShieldPost security</li>
+                    <li>✓ Email support</li>
+                </ul>
+                <div class="price">£49 <span>one-time</span></div>
+            </div>
+            
+            <div class="delivery-card featured">
+                <h3>Express Migration</h3>
+                <div class="delivery-time">24 hrs</div>
+                <ul>
+                    <li>✓ Priority processing</li>
+                    <li>✓ Manual review included</li>
+                    <li>✓ 2 revision rounds</li>
+                    <li>✓ Phone support</li>
+                </ul>
+                <div class="price">£99 <span>one-time</span></div>
+            </div>
+            
+            <div class="delivery-card">
+                <h3>White-Glove</h3>
+                <div class="delivery-time">Custom</div>
+                <ul>
+                    <li>✓ Dedicated migration specialist</li>
+                    <li>✓ Custom component rebuild</li>
+                    <li>✓ Unlimited revisions</li>
+                    <li>✓ 24/7 support</li>
+                </ul>
+                <div class="price">£299+ <span>one-time</span></div>
+            </div>
+        </div>
+        
+        <p style="text-align: center; margin-top: 2rem; color: var(--muted);">
+            Free migration included with annual Pro or Enterprise plans.
+        </p>
+    </section>
+    
+    <!-- Migration Form -->
+    <section class="migration-form" id="start">
+        <h2>Start Your Migration</h2>
+        <p>Submit your details and we'll begin the analysis.</p>
+        
+        <div class="form-container">
+            <form id="migration-form">
+                <div class="form-group">
+                    <label>Current Website URL <span class="required">*</span></label>
+                    <input type="url" name="currentUrl" placeholder="https://your-site.com" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Your Name <span class="required">*</span></label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Current Platform <span class="required">*</span></label>
+                    <div class="platform-grid">
+                        <div class="platform-option">
+                            <input type="radio" name="platform" id="wp" value="wordpress" checked>
+                            <label for="wp">WordPress</label>
+                        </div>
+                        <div class="platform-option">
+                            <input type="radio" name="platform" id="wix" value="wix">
+                            <label for="wix">Wix</label>
+                        </div>
+                        <div class="platform-option">
+                            <input type="radio" name="platform" id="squarespace" value="squarespace">
+                            <label for="squarespace">Squarespace</label>
+                        </div>
+                        <div class="platform-option">
+                            <input type="radio" name="platform" id="webflow" value="webflow">
+                            <label for="webflow">Webflow</label>
+                        </div>
+                        <div class="platform-option">
+                            <input type="radio" name="platform" id="drupal" value="drupal">
+                            <label for="drupal">Drupal</label>
+                        </div>
+                        <div class="platform-option">
+                            <input type="radio" name="platform" id="other" value="other">
+                            <label for="other">Other</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Migration Timeline</label>
+                    <select name="timeline">
+                        <option value="asap">ASAP (next 48 hours)</option>
+                        <option value="1-week" selected>Within 1 week</option>
+                        <option value="2-weeks">Within 2 weeks</option>
+                        <option value="month">Within 1 month</option>
+                        <option value="planning">Just planning for now</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Notes</label>
+                    <textarea name="notes" rows="3" placeholder="Any specific requirements, custom functionality, or concerns..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Request Migration Analysis</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- FAQ -->
+    <section class="faq">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Will my site go down during migration?</h3>
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. We build your new site on a preview URL. Only when you're 100% satisfied do we switch your DNS. The actual switchover takes seconds.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>What happens to my old site?</h3>
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>We retain a complete backup for 30 days. If you ever need to revert, we can restore instantly. After 30 days, the backup is securely deleted.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Will my SEO be affected?</h3>
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Positively. Faster load times improve rankings. We preserve all URLs, meta tags, and redirects. Most clients see ranking improvements within 2 weeks.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>What about my domain and email?</h3>
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>You keep your domain—we just update where it points. Email is unaffected. We provide step-by-step DNS guidance or can handle the switchover for you.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Can I edit the site after migration?</h3>
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! You get full access to the Fenton Forge visual builder. Make changes anytime, just like any other site built on our platform.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    
+
+
+    
+    <script>
+        // FAQ Toggle
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            answer.classList.toggle('active');
+            const icon = element.querySelector('span');
+            icon.textContent = answer.classList.contains('active') ? '−' : '+';
+        }
+        
+        // Form Submission
+        document.getElementById('migration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            // Show loading state
+            const btn = e.target.querySelector('.btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Analysing...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/migration/request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert(`Analysis requested! Check ${data.email} for your migration report within 24 hours.`);
+                    e.target.reset();
+                } else {
+                    alert('Request failed. Please try again or email migration@fenton-forge.com');
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<footer style="background: #1a1a2e; color: white; padding: 3rem 2rem; margin-top: 3rem;">
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Product</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="/categories/personal/" style="color: #ccc; text-decoration: none;">Personal</a></li>
+        <li><a href="/categories/small-business/" style="color: #ccc; text-decoration: none;">Small Business</a></li>
+        <li><a href="/categories/voluntary-organisation/" style="color: #ccc; text-decoration: none;">Voluntary</a></li>
+        <li><a href="/categories/corporate/" style="color: #ccc; text-decoration: none;">Corporate</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Sitemap</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="/" style="color: #ccc; text-decoration: none;">Home</a></li>
+        <li><a href="/sitemap.html" style="color: #ccc; text-decoration: none;">Full Sitemap</a></li>
+        <li><a href="/builder/" style="color: #ccc; text-decoration: none;">Start Building</a></li>
+        <li><a href="/migration/" style="color: #ccc; text-decoration: none;">Migrate Site</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Legal</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="/privacy.html" style="color: #ccc; text-decoration: none;">Privacy Policy</a></li>
+        <li><a href="/terms.html" style="color: #ccc; text-decoration: none;">Terms of Service</a></li>
+        <li><a href="/cookies.html" style="color: #ccc; text-decoration: none;">Cookie Policy</a></li>
+        <li><span style="color: #888; font-size: 0.8rem;">Patents Pending</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Company</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="https://fenton-creative.co" style="color: #ccc; text-decoration: none;">Fenton Creative</a></li>
+        <li><a href="https://dataprune.co" style="color: #ccc; text-decoration: none;">DataPrune</a></li>
+        <li><a href="mailto:hello@fenton-creative.co" style="color: #ccc; text-decoration: none;">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #333;">
+    <p style="color: #888;">&copy; 2026 Fenton Creative Ltd. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+
+</html>

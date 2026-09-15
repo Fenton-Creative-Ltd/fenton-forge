@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fenton Forge | Sovereign Edge-Native Website Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070a;
+            --surface: rgba(13, 17, 23, 0.8);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #00d4ff;
+            --accent-gold: #ffd700;
+            --text: #ffffff;
+            --muted: #8b949e;
+            --success: #3fb950;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Animated mesh background */
+        .mesh-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(0,212,255,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(255,215,0,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0,212,255,0.05) 0%, transparent 70%);
+            animation: meshMove 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -20px) rotate(2deg); }
+            66% { transform: translate(-20px, 30px) rotate(-2deg); }
+        }
+        
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(5, 7, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        /* AEGIS Badge */
+        .aegis-badge {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(35, 134, 54, 0.2);
+            border: 1px solid var(--success);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--success);
+            font-weight: 600;
+            z-index: 999;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(63, 185, 80, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(63, 185, 80, 0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+        
+        .hero h1 span {
+            display: block;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent) 50%, var(--accent-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(0, 212, 255, 0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.6s ease-out 0.6s both;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease-out 0.8s both;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #ffed4a 100%);
+            color: #1a1a2e;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .trust-badges {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.6s ease-out 1s both;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        
+        .trust-badge::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Category Grid */
+        .categories {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title h2 span {
+            color: var(--accent);
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .category-card {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(0,212,255,0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 60px rgba(0, 212, 255, 0.1);
+        }
+        
+        .category-card:hover::before {
+            opacity: 1;
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .category-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .tag-free {
+            background: rgba(63, 185, 80, 0.2);
+            color: var(--success);
+        }
+        
+        .tag-paid {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent);
+        }
+        
+        /* Comparison Section */
+        .comparison {
+            padding: 6rem 5%;
+            background: rgba(13, 17, 23, 0.5);
+        }
+        
+        .comparison-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .comparison h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comparison h2 span {
+            color: var(--accent-gold);
+        }
+        
+        .comparison > div > p {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 3rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        
+        th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--muted);
+            border-bottom: 2px solid var(--accent);
+            font-weight: 500;
+        }
+        
+        th:first-child {
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .highlight {
+            background: rgba(0, 212, 255, 0.05);
+            text-align: center;
+        }
+        
+        .check { color: var(--success); font-weight: bold; }
+        .cross { color: #f85149; }
+        
+        /* Footer */
+        footer {
+            background: rgba(13, 17, 23, 0.8);
+            border-top: 1px solid var(--border);
+            padding: 4rem 5% 2rem;
+        }
+        
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-col h4 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-col a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-col a:hover {
+            color: var(--text);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .category-grid { grid-template-columns: 1fr; }
+            .aegis-badge { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="mesh-bg"></div>
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 1s;"></div>
+    </div>
+    
+    <!-- AEGIS Badge -->
+    <div class="aegis-badge">
+        🛡️ AEGIS Secure Architecture
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <a href="/" class="logo">FENTON FORGE™</a>
+        <nav>
+            <a href="/builder/" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Start Building</a>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            🚀 The World's First Sovereign, Edge-Native Website Builder
+        </div>
+        <h1>
+            Build Websites That<br>
+            <span>Own The Edge</span>
+        </h1>
+        <p class="hero-subtitle">
+            AI-powered. Privacy-first. No servers. No subscriptions.<br>
+            <strong>Your data, your code, your edge node.</strong>
+        </p>
+        <div class="hero-buttons">
+            <a href="/builder/" class="btn-primary">Start Building Free →</a>
+            <a href="#compare" class="btn-secondary">See Comparison</a>
+        </div>
+        <div class="trust-badges">
+            <div class="trust-badge">No credit card required</div>
+            <div class="trust-badge">Free forever tier</div>
+            <div class="trust-badge">Own your data</div>
+        </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="section-title">
+            <h2>What Are You <span>Building?</span></h2>
+            <p style="color: var(--muted);">Choose your path. Each category is optimized for your specific needs.</p>
+        </div>
+        <div class="category-grid">
+            <a href="/categories/personal/" class="category-card">
+                <div class="category-icon">👤</div>
+                <h3>Personal</h3>
+                <p>Portfolio, blog, CV, or passion project. Your personal corner of the web.</p>
+                <span class="category-tag tag-free">Free Forever</span>
+            </a>
+            <a href="/categories/small-business/" class="category-card">
+                <div class="category-icon">🏪</div>
+                <h3>Small Business</h3>
+                <p>Local shops, trades, consultants, startups. Professional presence that converts.</p>
+                <span class="category-tag tag-paid">From £29/mo</span>
+            </a>
+            <a href="/categories/voluntary-organisation/" class="category-card">
+                <div class="category-icon">💙</div>
+                <h3>Voluntary</h3>
+                <p>Charities, CICs, community groups, social enterprises. Free with verification.</p>
+                <span class="category-tag tag-free">Free - Verify Required</span>
+            </a>
+            <a href="/categories/corporate/" class="category-card">
+                <div class="category-icon">🏢</div>
+                <h3>Corporate</h3>
+                <p>Enterprise, FTSE, multinationals. Dedicated infrastructure, SLA guarantees.</p>
+                <span class="category-tag tag-paid">Enterprise</span>
+            </a>
+            <a href="/categories/public-sector/" class="category-card">
+                <div class="category-icon">🏛️</div>
+                <h3>Public Sector</h3>
+                <p>NHS, Police, Councils, Government. NCSC-aligned, procurement ready.</p>
+                <span class="category-tag tag-paid">Gov Rates</span>
+            </a>
+            <a href="/categories/agency/" class="category-card">
+                <div class="category-icon">🚀</div>
+                <h3>Agency</h3>
+                <p>Web agencies, freelancers, dev shops. White-label and resell.</p>
+                <span class="category-tag tag-paid">Partner Rates</span>
+            </a>
+        </div>
+    </section>
+    
+    <!-- Comparison Section -->
+    <section class="comparison" id="compare">
+        <div class="comparison-inner">
+            <h2>Why <span>Fenton Forge</span>?</h2>
+            <p>See how we compare to traditional website builders</p>
+            <div style="overflow-x: auto; margin-top: 2rem;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="highlight">Fenton Forge</th>
+                            <th>WordPress</th>
+                            <th>Wix/Squarespace</th>
+                            <th>Webflow</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Data Sovereignty</strong></td>
+                            <td class="highlight"><span class="check">✓</span> You own everything</td>
+                            <td><span class="cross">✗</span> Hosted</td>
+                            <td><span class="cross">✗</span> Hosted</td>
+                            <td><span class="cross">✗</span> Hosted</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI-Powered Build</strong></td>
+                            <td class="highlight"><span class="check">✓</span> Native integration</td>
+                            <td><span class="cross">✗</span> Plugins</td>
+                            <td><span class="cross">✗</span> Basic</td>
+                            <td><span class="cross">✗</span> Limited</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Edge-Native (Global CDN)</strong></td>
+                            <td class="highlight"><span class="check">✓</span> 300+ locations</td>
+                            <td><span class="cross">✗</span> Single server</td>
+                            <td><span class="cross">✗</span> Limited</td>
+                            <td><span class="cross">✗</span> Enterprise only</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Privacy by Design (GDPR)</strong></td>
+                            <td class="highlight"><span class="check">✓</span> Built-in</td>
+                            <td><span class="cross">✗</span> Plugins</td>
+                            <td><span class="cross">✗</span> Basic</td>
+                            <td><span class="cross">✗</span> Manual</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AEGIS Security</strong></td>
+                            <td class="highlight"><span class="check">✓</span> Military-grade</td>
+                            <td><span class="cross">✗</span> Standard</td>
+                            <td><span class="cross">✗</span> Standard</td>
+                            <td><span class="cross">✗</span> Enterprise</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pricing Model</strong></td>
+                            <td class="highlight"><span class="check">✓</span> Free/Pay-once</td>
+                            <td><span class="cross">✗</span> Monthly hosting</td>
+                            <td><span class="cross">✗</span> Subscription</td>
+                            <td><span class="cross">✗</span> Subscription</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="text-align: center; margin-top: 2rem; color: var(--muted); font-size: 0.9rem;">
+                <span class="check">✓</span> = Included &nbsp; <span class="cross">✗</span> = Not available
+            </p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="/categories/personal/">Personal</a></li>
+                    <li><a href="/categories/small-business/">Small Business</a></li>
+                    <li><a href="/categories/voluntary-organisation/">Voluntary</a></li>
+                    <li><a href="/categories/corporate/">Corporate</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Sitemap</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/builder/">Start Building</a></li>
+                    <li><a href="/migration/">Migrate Site</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/terms.html">Terms of Service</a></li>
+                    <li><a href="/cookies.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="https://fenton-creative.co">Fenton Creative</a></li>
+                    <li><a href="https://dataprune.co">DataPrune</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Fenton Creative Ltd. All rights reserved. Patents Pending.</p>
+        </div>
+    </footer>
+</body>
+</html>

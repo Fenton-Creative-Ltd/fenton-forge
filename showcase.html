@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Showcase - Fenton Forge</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: white; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+    h1 { font-size: 3rem; margin-bottom: 1rem; text-align: center; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { text-align: center; opacity: 0.8; margin-bottom: 3rem; font-size: 1.2rem; }
+    .competition-box { background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2)); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 16px; padding: 2rem; margin: 2rem 0; text-align: center; }
+    .competition-box h3 { margin-bottom: 1rem; color: #667eea; }
+    .showcase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0; }
+    .showcase-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; }
+    .showcase-img { height: 180px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+    .showcase-info { padding: 1.5rem; }
+    .showcase-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+    .category-tag { background: rgba(102, 126, 234, 0.2); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; }
+    .vote-btn { background: transparent; border: 1px solid rgba(255, 255, 255, 0.3); color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+    .vote-btn:hover { background: rgba(102, 126, 234, 0.3); }
+    .submit-section { background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 3rem; margin-top: 4rem; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .btn-primary { display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Showcase</h1>
+    <p class="subtitle">Websites built with Fenton Forge</p>
+    
+    <div class="competition-box">
+      <h3>🏆 Annual Showcase Awards</h3>
+      <p>Vote for your favourite customer-created sites!</p>
+      <p>Categories: Best Looking | Most Functional | Easiest to Use</p>
+      <p><strong>Top 3 announced September 2026</strong></p>
+      <p>Winner receives: Full site upgrade + 1 year free subscription</p>
+    </div>
+    
+    <div class="showcase-grid">
+      <div class="showcase-card">
+        <div class="showcase-img">🏥</div>
+        <div class="showcase-info">
+          <h3>MediCare Plus</h3>
+          <p>Healthcare provider website with patient portal</p>
+          <div class="showcase-meta">
+            <span class="category-tag">Corporate</span>
+            <button class="vote-btn">❤️ Vote</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="showcase-card">
+        <div class="showcase-img">🎨</div>
+        <div class="showcase-info">
+          <h3>Artisan Collective</h3>
+          <p>Artist portfolio with integrated shop</p>
+          <div class="showcase-meta">
+            <span class="category-tag">Small Business</span>
+            <button class="vote-btn">❤️ Vote</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="showcase-card">
+        <div class="showcase-img">🤝</div>
+        <div class="showcase-info">
+          <h3>Community First</h3>
+          <p>Volunteer organisation hub</p>
+          <div class="showcase-meta">
+            <span class="category-tag">Voluntary</span>
+            <button class="vote-btn">❤️ Vote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="submit-section">
+      <h2>Submit Your Site</h2>
+      <p>Have a great Fenton Forge site? Feature it here.</p>
+      <a href="mailto:showcase@fenton-forge.com?subject=Showcase Submission" class="btn-primary">Email Submission</a>
+    </div>
+  </div>
+</body>
+</html>

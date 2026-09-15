@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Organisation | Fenton Forge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070a;
+            --surface: #0d1117;
+            --border: #21262d;
+            --accent: #00d4ff;
+            --text: #ffffff;
+            --muted: #8b949e;
+            --success: #238636;
+            --warning: #ffc107;
+            --danger: #da3633;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo span { color: var(--accent); }
+        
+        /* Progress Steps */
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .progress::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .step.active .step-number {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .step.completed .step-number {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+        
+        /* Form Container */
+        .form-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: var(--muted);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        label .required {
+            color: var(--danger);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .hint {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Verification Code Input */
+        .code-inputs {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .code-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(0,212,255,0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+        
+        /* Status Messages */
+        .status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .status.show {
+            display: block;
+        }
+        
+        .status.success {
+            background: rgba(35,134,54,0.1);
+            border: 1px solid var(--success);
+            color: #3fb950;
+        }
+        
+        .status.error {
+            background: rgba(218,54,51,0.1);
+            border: 1px solid var(--danger);
+            color: #f85149;
+        }
+        
+        .status.pending {
+            background: rgba(255,193,7,0.1);
+            border: 1px solid var(--warning);
+            color: #d29922;
+        }
+        
+        /* Result Options */
+        .options {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .option-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option-card:hover {
+            border-color: var(--accent);
+        }
+        
+        .option-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .option-card p {
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header style="background: #1a1a2e; padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <a href="/" style="text-decoration: none;">
+        <span style="color: #ffd700; font-size: 1.5rem; font-weight: bold;">FENTON FORGE™</span>
+      </a>
+    </div>
+    <nav style="display: flex; gap: 2rem; align-items: center;">
+      <a href="/" style="color: #ccc; text-decoration: none; font-weight: 500;">Home</a>
+      <a href="/categories/personal/" style="color: #ccc; text-decoration: none;">Personal</a>
+      <a href="/categories/small-business/" style="color: #ccc; text-decoration: none;">Small Business</a>
+      <a href="/categories/voluntary-organisation/" style="color: #ccc; text-decoration: none;">Voluntary</a>
+      <a href="/categories/corporate/" style="color: #ccc; text-decoration: none;">Corporate</a>
+      <a href="/builder/" style="background: #ffd700; color: #1a1a2e; padding: 0.5rem 1rem; text-decoration: none; font-weight: bold; border-radius: 4px;">Start Building</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="container">
+        <div class="logo">FENTON<span>FORGE</span>™</div>
+        
+        <!-- Progress Steps -->
+        <div class="progress">
+            <div class="step completed" id="step-1">
+                <div class="step-number">✓</div>
+                <div class="step-label">Submit</div>
+            </div>
+            <div class="step active" id="step-2">
+                <div class="step-number">2</div>
+                <div class="step-label">Verify</div>
+            </div>
+            <div class="step" id="step-3">
+                <div class="step-number">3</div>
+                <div class="step-label">Complete</div>
+            </div>
+        </div>
+        
+        <!-- STEP 1: Submission Form -->
+        <div id="submission-form" class="form-container">
+            <h1>Verify Your Organisation</h1>
+            <p class="subtitle">Voluntary organisations receive free access to Fenton Forge. We just need to verify your status.</p>
+            
+            <div class="status" id="status-message"></div>
+            
+            <form id="verify-form">
+                <div class="form-group">
+                    <label>Organisation Name <span class="required">*</span></label>
+                    <input type="text" id="org-name" required placeholder="e.g., Community Support Trust">
+                </div>
+                
+                <div class="form-group">
+                    <label>Organisation Type <span class="required">*</span></label>
+                    <select id="org-type" required>
+                        <option value="">Select type...</option>
+                        <option value="charity">Registered Charity</option>
+                        <option value="cic">Community Interest Company (CIC)</option>
+                        <option value="social-enterprise">Social Enterprise</option>
+                        <option value="community-group">Community Group</option>
+                        <option value="other">Other Voluntary Organisation</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Registration Number (if applicable)</label>
+                    <input type="text" id="reg-number" placeholder="Charity Commission or Companies House number">
+                    <p class="hint">This helps us verify your status automatically. Not required but speeds up approval.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>Organisation Website (if exists)</label>
+                    <input type="url" id="org-website" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>Annual Turnover</label>
+                    <select id="turnover">
+                        <option value="under-10k">Under £10,000</option>
+                        <option value="10k-50k">£10,000 - £50,000</option>
+                        <option value="50k-100k">£50,000 - £100,000</option>
+                        <option value="100k-500k">£100,000 - £500,000</option>
+                        <option value="over-500k">Over £500,000</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Mission Statement <span class="required">*</span></label>
+                    <textarea id="mission" rows="3" required placeholder="Briefly describe what your organisation does..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Your Name <span class="required">*</span></label>
+                    <input type="text" id="contact-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input type="email" id="contact-email" required placeholder="you@organisation.org.uk">
+                    <p class="hint">We'll send your verification code to this address.</p>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit for Verification</button>
+            </form>
+        </div>
+        
+        <!-- STEP 2: Code Verification -->
+        <div id="code-verification" class="form-container" style="display: none;">
+            <h1>Enter Verification Code</h1>
+            <p class="subtitle">We've sent a 6-digit code to <strong id="email-display"></strong></p>
+            
+            <div class="status" id="code-status"></div>
+            
+            <div class="code-inputs">
+                <input type="text" class="code-input" maxlength="1" data-index="0">
+                <input type="text" class="code-input" maxlength="1" data-index="1">
+                <input type="text" class="code-input" maxlength="1" data-index="2">
+                <input type="text" class="code-input" maxlength="1" data-index="3">
+                <input type="text" class="code-input" maxlength="1" data-index="4">
+                <input type="text" class="code-input" maxlength="1" data-index="5">
+            </div>
+            
+            <button class="btn btn-primary" id="verify-code-btn">Verify Code</button>
+            
+            <p style="text-align: center; margin-top: 1rem;">
+                <a href="#" id="resend-code" style="color: var(--accent);">Resend code</a> | 
+                <a href="#" id="change-email" style="color: var(--muted);">Change email</a>
+            </p>
+        </div>
+        
+        <!-- STEP 3: Results -->
+        <div id="verification-result" class="form-container" style="display: none;">
+            <div id="result-content"></div>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Verifying your organisation...</p>
+        </div>
+    </div>
+    
+    <script>
+        let currentVerificationId = null;
+        
+        // Form submission
+        document.getElementById('verify-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                orgName: document.getElementById('org-name').value,
+                orgType: document.getElementById('org-type').value,
+                registrationNumber: document.getElementById('reg-number').value,
+                website: document.getElementById('org-website').value,
+                annualTurnover: document.getElementById('turnover').value,
+                missionStatement: document.getElementById('mission').value,
+                contactName: document.getElementById('contact-name').value,
+                contactEmail: document.getElementById('contact-email').value
+            };
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/api/verification/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentVerificationId = result.verificationId;
+                    document.getElementById('email-display').textContent = data.contactEmail;
+                    showStep(2);
+                } else {
+                    showStatus('error', result.message);
+                }
+                
+            } catch (error) {
+                showStatus('error', 'Submission failed. Please try again.');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // Code input handling
+        const codeInputs = document.querySelectorAll('.code-input');
+        codeInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < 5) {
+                    codeInputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    codeInputs[index - 1].focus();
+                }
+            });
+        });
+        
+        // Verify code
+        document.getElementById('verify-code-btn').addEventListener('click', async () => {
+            const code = Array.from(codeInputs).map(i => i.value).join('');
+            
+            if (code.length !== 6) {
+                showCodeStatus('error', 'Please enter all 6 digits');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/api/verification/verify-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        verificationId: currentVerificationId,
+                        code: code
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccess(result);
+                } else {
+                    showRejection(result);
+                }
+                
+            } catch (error) {
+                showCodeStatus('error', 'Verification failed. Please try again.');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // UI Helpers
+        function showStep(step) {
+            document.getElementById('submission-form').style.display = step === 1 ? 'block' : 'none';
+            document.getElementById('code-verification').style.display = step === 2 ? 'block' : 'none';
+            document.getElementById('verification-result').style.display = step === 3 ? 'block' : 'none';
+            
+            // Update progress
+            document.querySelectorAll('.step').forEach((el, i) => {
+                el.classList.remove('active', 'completed');
+                if (i < step - 1) el.classList.add('completed');
+                if (i === step - 1) el.classList.add('active');
+            });
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        function showStatus(type, message) {
+            const el = document.getElementById('status-message');
+            el.className = `status ${type} show`;
+            el.textContent = message;
+        }
+        
+        function showCodeStatus(type, message) {
+            const el = document.getElementById('code-status');
+            el.className = `status ${type} show`;
+            el.textContent = message;
+        }
+        
+        function showSuccess(result) {
+            showStep(3);
+            const content = document.getElementById('result-content');
+            content.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                    <h1 style="color: var(--success); margin-bottom: 1rem;">Verification Successful!</h1>
+                    <p style="margin-bottom: 2rem;">Your organisation <strong>${result.account.orgName}</strong> has been verified.</p>
+                    <div style="background: var(--bg); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                        <p style="margin-bottom: 0.5rem;"><strong>Account Tier:</strong> Voluntary (Verified)</p>
+                        <p style="margin-bottom: 0.5rem;"><strong>Pages Included:</strong> ${result.account.maxPages}</p>
+                        <p><strong>Email:</strong> ${result.account.email}</p>
+                    </div>
+                    <p style="margin-bottom: 1.5rem;"><strong>Next Steps:</strong></p>
+                    <ul style="text-align: left; margin-bottom: 2rem;">
+                        ${result.nextSteps.map(step => `<li style="margin-bottom: 0.5rem;">${step}</li>`).join('')}
+                    </ul>
+                    <a href="/builder/" class="btn btn-primary">Start Building Now</a>
+                </div>
+            `;
+        }
+        
+        function showRejection(result) {
+            showStep(3);
+            const content = document.getElementById('result-content');
+            
+            let optionsHtml = '';
+            if (result.options) {
+                optionsHtml = '<div class="options">' + result.options.map(opt => `
+                    <div class="option-card" onclick="window.location.href='${opt.url}'">
+                        <h3>${opt.label}</h3>
+                        <p>${opt.action === 'resubmit' ? 'Provide additional documentation for manual review' : 
+                             opt.action === 'support' ? 'Get help from our support team' : 
+                             'Start with a paid plan instead'}</p>
+                    </div>
+                `).join('') + '</div>';
+            }
+            
+            content.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
+                    <h1 style="color: var(--warning); margin-bottom: 1rem;">Verification ${result.status === 'pending-review' ? 'Pending' : 'Not Approved'}</h1>
+                    <p style="margin-bottom: 2rem; color: var(--muted);">${result.message}</p>
+                    ${result.reason ? `<p style="background: var(--bg); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; font-family: monospace;">Reason: ${result.reason}</p>` : ''}
+                    ${optionsHtml}
+                </div>
+            `;
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<footer style="background: #1a1a2e; color: white; padding: 3rem 2rem; margin-top: 3rem;">
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Product</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="/categories/personal/" style="color: #ccc; text-decoration: none;">Personal</a></li>
+        <li><a href="/categories/small-business/" style="color: #ccc; text-decoration: none;">Small Business</a></li>
+        <li><a href="/categories/voluntary-organisation/" style="color: #ccc; text-decoration: none;">Voluntary</a></li>
+        <li><a href="/categories/corporate/" style="color: #ccc; text-decoration: none;">Corporate</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Sitemap</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="/" style="color: #ccc; text-decoration: none;">Home</a></li>
+        <li><a href="/sitemap.html" style="color: #ccc; text-decoration: none;">Full Sitemap</a></li>
+        <li><a href="/builder/" style="color: #ccc; text-decoration: none;">Start Building</a></li>
+        <li><a href="/migration/" style="color: #ccc; text-decoration: none;">Migrate Site</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Legal</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="/privacy.html" style="color: #ccc; text-decoration: none;">Privacy Policy</a></li>
+        <li><a href="/terms.html" style="color: #ccc; text-decoration: none;">Terms of Service</a></li>
+        <li><a href="/cookies.html" style="color: #ccc; text-decoration: none;">Cookie Policy</a></li>
+        <li><span style="color: #888; font-size: 0.8rem;">Patents Pending</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color: #ffd700; margin-bottom: 1rem;">Company</h4>
+      <ul style="list-style: none; padding: 0; line-height: 2;">
+        <li><a href="https://fenton-creative.co" style="color: #ccc; text-decoration: none;">Fenton Creative</a></li>
+        <li><a href="https://dataprune.co" style="color: #ccc; text-decoration: none;">DataPrune</a></li>
+        <li><a href="mailto:hello@fenton-creative.co" style="color: #ccc; text-decoration: none;">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #333;">
+    <p style="color: #888;">&copy; 2026 Fenton Creative Ltd. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+
+</html>

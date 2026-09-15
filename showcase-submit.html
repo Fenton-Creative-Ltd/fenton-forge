@@ -1,0 +1,57 @@
+<style>
+.showcase-submit-section { background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 2.5rem; margin: 3rem auto; max-width: 600px; border: 1px solid rgba(255, 255, 255, 0.1); }
+.showcase-submit-section h2 { margin-bottom: 0.5rem; font-size: 1.8rem; }
+.showcase-submit-section > p { opacity: 0.7; margin-bottom: 1.5rem; }
+.submit-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.submit-form input, .submit-form select, .submit-form textarea { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 0.9rem; color: white; font-family: inherit; font-size: 1rem; transition: border-color 0.3s; }
+.submit-form input:focus, .submit-form select:focus, .submit-form textarea:focus { outline: none; border-color: #667eea; }
+.submit-form input::placeholder, .submit-form textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
+.submit-form select option { background: #1a1a2e; color: white; }
+.submit-form button { margin-top: 0.5rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 1rem; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: opacity 0.3s; }
+.submit-form button:hover { opacity: 0.9; }
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+</style>
+<div class="showcase-submit-section">
+  <h2>Add Your Site to Showcase</h2>
+  <p>Have a great Fenton Forge site? Submit it for review.</p>
+  <form id="showcaseForm" class="submit-form">
+    <div class="form-row">
+      <input type="text" name="siteName" placeholder="Site Name" required>
+      <input type="url" name="siteUrl" placeholder="https://yoursite.com" required>
+    </div>
+    <input type="email" name="email" placeholder="Your email" required>
+    <select name="category" required>
+      <option value="">Select Category</option>
+      <option value="personal">Personal</option>
+      <option value="small-business">Small Business</option>
+      <option value="voluntary">Voluntary Organisation</option>
+      <option value="corporate">Corporate</option>
+      <option value="agency">Agency</option>
+    </select>
+    <textarea name="description" placeholder="Brief description of your site..." rows="3"></textarea>
+    <button type="submit">Submit for Review</button>
+  </form>
+</div>
+<script>
+document.getElementById('showcaseForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData);
+  try {
+    const response = await fetch('/api/showcase/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (response.ok) {
+      alert('Thank you! Your submission is under review.');
+      e.target.reset();
+    } else {
+      alert('Error submitting. Please try again.');
+    }
+  } catch (error) {
+    alert('Network error. Please try again.');
+  }
+});
+</script>

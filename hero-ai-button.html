@@ -1,0 +1,32 @@
+<style>
+.hero-cta-container { text-align: center; margin: 2rem 0; }
+.btn-ai-build { display: inline-flex; align-items: center; justify-content: space-between; gap: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem 2.5rem; border-radius: 16px; text-decoration: none; font-size: 1.2rem; transition: all 0.3s ease; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4); border: none; cursor: pointer; }
+.btn-ai-build:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(102, 126, 234, 0.5); }
+.btn-content { display: flex; align-items: center; gap: 1rem; }
+.btn-icon { font-size: 2.5rem; }
+.btn-text { display: flex; flex-direction: column; text-align: left; }
+.btn-text strong { font-size: 1.4rem; margin-bottom: 0.2rem; }
+.btn-subtitle { font-size: 0.95rem; opacity: 0.9; font-weight: 400; }
+.btn-arrow { font-size: 1.8rem; transition: transform 0.3s ease; }
+.btn-ai-build:hover .btn-arrow { transform: translateX(8px); }
+.pulse-animation { animation: pulse-glow 2s infinite; }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4); } 50% { box-shadow: 0 10px 60px rgba(102, 126, 234, 0.6), 0 0 0 15px rgba(102, 126, 234, 0.1); } }
+.hero-trust-pills { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+.pill { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 0.6rem 1.2rem; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(255, 255, 255, 0.2); }
+</style>
+<div class="hero-cta-container">
+  <a href="/builder/questionnaire.html" class="btn-ai-build pulse-animation">
+    <div class="btn-content">
+      <span class="btn-icon">🤖</span>
+      <div class="btn-text">
+        <strong>AI Build Your Site</strong>
+        <span class="btn-subtitle">10 questions → Custom website in 5 minutes</span>
+      </div>
+    </div>
+    <div class="btn-arrow">→</div>
+  </a>
+  <div class="hero-trust-pills">
+    <span class="pill">⚡ No credit card required</span>
+    <span class="pill">🎯 Free for VCSEs under £500k</span>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0",
+  "importedFrom": "https://example.com/",
+  "importDate": "2026-09-14T02:21:54.941Z",
+  "jobId": "b31f82f9-ede0-4218-925a-15c6b6334c4c",
+  "pages": [],
+  "components": {},
+  "assets": {
+    "total": 0,
+    "images": 0,
+    "optimised": 0
+  },
+  "optimisations": {
+    "imagesCompressed": true,
+    "scriptsMinified": true,
+    "trackingRemoved": true,
+    "lazyLoading": true
+  },
+  "metrics": {
+    "originalSize": 0,
+    "optimisedSize": 0,
+    "savings": "90%"
+  }
+}

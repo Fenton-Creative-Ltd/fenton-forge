@@ -1,0 +1,38 @@
+{
+  "name": "fenton-forge",
+  "version": "1.0.0",
+  "description": "Edge-native website builder with migration service",
+  "main": "api/server.js",
+  "scripts": {
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js",
+    "scrape": "node api/scraper/test-scraper.js"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs-extra": "^11.3.0",
+    "helmet": "^8.1.0",
+    "puppeteer": "^25.10.0",
+    "rate-limiter-flexible": "^6.2.0",
+    "sharp": "^0.35.4",
+    "stripe": "^22.6.2",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Fenton Creative Ltd",
+  "license": "UNLICENSED",
+  "private": true,
+  "allowScripts": {
+    "fsevents@2.3.3": true,
+    "puppeteer@25.10.0": true
+  }
+}
