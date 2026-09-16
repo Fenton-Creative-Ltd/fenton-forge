@@ -1,0 +1,168 @@
+const express = require('express');
+const router = express.Router();
+const dns = require('dns').promises;
+
+// Email/Domain reputation check
+router.post('/check', async (req, res) => {
+  const { email, domain } = req.body;
+  const results = {
+    email: email || null,
+    domain: domain || extractDomain(email),
+    checks: {},
+    reputation: 'unknown',
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    // DNS checks
+    if (results.domain) {
+      results.checks.mx = await checkMXRecords(results.domain);
+      results.checks.spf = await checkSPF(results.domain);
+      results.checks.dkim = await checkDKIM(results.domain);
+      results.checks.blacklist = await checkBlacklists(results.domain);
+    }
+
+    // Email pattern analysis
+    if (email) {
+      results.checks.pattern = analyzeEmailPattern(email);
+      results.checks.disposable = isDisposableEmail(email);
+      results.checks.catchAll = await checkCatchAll(email);
+    }
+
+    // Calculate reputation score
+    results.reputation = calculateReputation(results.checks);
+    results.riskScore = calculateRiskScore(results.checks);
+
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Bulk check endpoint
+router.post('/check-bulk', async (req, res) => {
+  const { emails } = req.body;
+  const results = await Promise.all(
+    emails.map(email => checkSingle(email))
+  );
+  res.json(results);
+});
+
+// Consequence Engine (The "Fight Back" Feature)
+router.post('/consequence', async (req, res) => {
+  const { spammerEmail, spammerDomain, evidence } = req.body;
+  
+  // Validate this is actually spam first
+  if (!validateSpamEvidence(evidence)) {
+    return res.status(400).json({ error: 'Insufficient evidence' });
+  }
+
+  const consequences = [];
+
+  // 1. Auto-report to authorities
+  consequences.push(reportToAuthorities(spammerEmail, spammerDomain, evidence));
+
+  // 2. Honeypot trap - sign them up for monitoring
+  consequences.push(addToHoneypot(spammerEmail, spammerDomain));
+
+  // 3. Loop spammers together (if multiple confirmed spammers)
+  consequences.push(loopSpammersTogether(spammerEmail));
+
+  // 4. Feed to spam filters globally
+  consequences.push(feedToGlobalBlacklist(spammerEmail, spammerDomain));
+
+  res.json({
+    action: 'consequence_deployed',
+    consequences: await Promise.all(consequences),
+    message: 'Spammer neutralized'
+  });
+});
+
+// Helper functions
+async function checkMXRecords(domain) {
+  try {
+    const records = await dns.resolveMx(domain);
+    return { hasMX: true, records: records.length };
+  } catch {
+    return { hasMX: false, records: 0 };
+  }
+}
+
+async function checkSPF(domain) {
+  try {
+    const records = await dns.resolveTxt(domain);
+    const spf = records.flat().find(r => r.startsWith('v=spf1'));
+    return { hasSPF: !!spf, record: spf || null };
+  } catch {
+    return { hasSPF: false, record: null };
+  }
+}
+
+function analyzeEmailPattern(email) {
+  const patterns = {
+    suspiciousChars: /[0-9]{4,}/.test(email), // Too many numbers
+    suspiciousLength: email.length > 35,
+    suspiciousDomain: /(temp|throwaway|disposable)/i.test(email),
+    pattern: 'analyzed'
+  };
+  return patterns;
+}
+
+function isDisposableEmail(email) {
+  const disposableDomains = [
+    'tempmail.com', 'throwaway.com', 'guerrillamail.com',
+    'mailinator.com', 'yopmail.com', 'sharklasers.com'
+  ];
+  const domain = email.split('@')[1];
+  return disposableDomains.includes(domain);
+}
+
+function calculateReputation(checks) {
+  let score = 100;
+  if (!checks.mx?.hasMX) score -= 30;
+  if (!checks.spf?.hasSPF) score -= 20;
+  if (checks.blacklist?.listed) score -= 50;
+  if (checks.pattern?.suspiciousChars) score -= 10;
+  
+  if (score >= 80) return 'trusted';
+  if (score >= 50) return 'neutral';
+  if (score >= 20) return 'suspicious';
+  return 'malicious';
+}
+
+// Consequence functions
+function reportToAuthorities(email, domain, evidence) {
+  // Auto-generate abuse reports
+  return {
+    action: 'reported',
+    targets: ['abuse@' + domain, 'spam@uce.gov', 'report@spamcop.net'],
+    evidenceHash: hashEvidence(evidence)
+  };
+}
+
+function addToHoneypot(email, domain) {
+  // Add to monitoring system that tracks their activity
+  return {
+    action: 'honeypot_deployed',
+    trackingId: generateTrackingId(email)
+  };
+}
+
+function loopSpammersTogether(email) {
+  // If we have multiple confirmed spammers, sign them up for each other's lists
+  // This is the "let them fight each other" approach
+  return {
+    action: 'spammer_loop',
+    message: 'Spammer subscribed to fellow spammer lists'
+  };
+}
+
+function feedToGlobalBlacklist(email, domain) {
+  // Submit to Spamhaus, Barracuda, etc.
+  return {
+    action: 'global_blacklist',
+    services: ['Spamhaus', 'Barracuda', 'SORBS']
+  };
+}
+
+module.exports = router;

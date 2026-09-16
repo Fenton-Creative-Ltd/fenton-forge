@@ -246,3 +246,6 @@ app.post('/api/scrape/direct', async (req, res) => {
     }
 });
 
+
+// Security API
+app.use('/api/security', require('./security'));

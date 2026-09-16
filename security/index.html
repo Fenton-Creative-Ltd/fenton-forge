@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Email Security Check - Fenton Forge</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white; 
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    h1 { text-align: center; font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .subtitle { text-align: center; opacity: 0.8; margin-bottom: 3rem; }
+    
+    .check-box { 
+      background: rgba(255,255,255,0.05); 
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .input-group { display: flex; gap: 1rem; margin-bottom: 1rem; }
+    input { 
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      color: white;
+      font-size: 1rem;
+    }
+    button { 
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button.danger { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+    
+    .results { display: none; }
+    .results.active { display: block; }
+    
+    .metric { 
+      display: flex; 
+      justify-content: space-between; 
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .metric:last-child { border-bottom: none; }
+    .metric-label { opacity: 0.7; }
+    .metric-value { font-weight: bold; }
+    .metric-value.safe { color: #2ecc71; }
+    .metric-value.warning { color: #f39c12; }
+    .metric-value.danger { color: #e74c3c; }
+    
+    .reputation-badge { 
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+    .reputation-badge.trusted { background: #2ecc71; color: #1a1a2e; }
+    .reputation-badge.neutral { background: #95a5a6; color: #1a1a2e; }
+    .reputation-badge.suspicious { background: #f39c12; color: #1a1a2e; }
+    .reputation-badge.malicious { background: #e74c3c; }
+    
+    .consequence-section { 
+      margin-top: 2rem;
+      padding: 2rem;
+      background: rgba(231, 76, 60, 0.1);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+      border-radius: 16px;
+    }
+    .consequence-section h3 { color: #e74c3c; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Email Security Check</h1>
+    <p class="subtitle">Powered by Fenton Forge AEGIS Architecture</p>
+    
+    <div class="check-box">
+      <div class="input-group">
+        <input type="email" id="emailInput" placeholder="Enter email address...">
+        <button onclick="checkEmail()">Check</button>
+      </div>
+      <div class="input-group">
+        <input type="text" id="domainInput" placeholder="Or enter domain...">
+        <button onclick="checkDomain()">Check Domain</button>
+      </div>
+    </div>
+    
+    <div class="results" id="results">
+      <div class="check-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3>Results</h3>
+          <span class="reputation-badge" id="reputationBadge">Unknown</span>
+        </div>
+        <div id="metrics"></div>
+      </div>
+      
+      <div class="consequence-section" id="consequenceSection" style="display: none;">
+        <h3>⚔️ Active Defense Available</h3>
+        <p>This entity has been confirmed as malicious. Deploy consequence?</p>
+        <button class="danger" onclick="deployConsequence()">
+          Deploy Consequence → Neutralize Threat
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const API_URL = '/api/security';
+    
+    async function checkEmail() {
+      const email = document.getElementById('emailInput').value;
+      if (!email) return;
+      
+      await check({ email });
+    }
+    
+    async function checkDomain() {
+      const domain = document.getElementById('domainInput').value;
+      if (!domain) return;
+      
+      await check({ domain });
+    }
+    
+    async function check(payload) {
+      try {
+        const response = await fetch(`${API_URL}/check`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        displayResults(data);
+      } catch (error) {
+        alert('Error checking: ' + error.message);
+      }
+    }
+    
+    function displayResults(data) {
+      document.getElementById('results').classList.add('active');
+      
+      const badge = document.getElementById('reputationBadge');
+      badge.textContent = data.reputation || 'unknown';
+      badge.className = `reputation-badge ${data.reputation || 'neutral'}`;
+      
+      let metricsHtml = '';
+      if (data.checks) {
+        metricsHtml = Object.entries(data.checks).map(([key, value]) => {
+          const status = value === true || (value && value.hasMX) || (value && value.hasSPF) ? 'safe' :
+                        value === false || (value && !value.hasMX) ? 'danger' : 'warning';
+          const displayValue = typeof value === 'object' ? JSON.stringify(value) : value;
+          return `
+            <div class="metric">
+              <span class="metric-label">${key.toUpperCase()}</span>
+              <span class="metric-value ${status}">${displayValue}</span>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      document.getElementById('metrics').innerHTML = metricsHtml || '<p>No detailed checks available</p>';
+      
+      if (data.reputation === 'malicious') {
+        document.getElementById('consequenceSection').style.display = 'block';
+      }
+    }
+    
+    async function deployConsequence() {
+      const email = document.getElementById('emailInput').value;
+      
+      if (!confirm('Deploy active defense against this threat?')) return;
+      
+      try {
+        const response = await fetch(`${API_URL}/consequence`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            spammerEmail: email,
+            evidence: { userConfirmed: true, timestamp: new Date().toISOString() }
+          })
+        });
+        
+        const result = await response.json();
+        alert(`Consequence deployed: ${result.message || 'Threat neutralized'}`);
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
