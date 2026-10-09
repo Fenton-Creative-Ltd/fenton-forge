@@ -1,0 +1,31 @@
+name: Fenton Forge launch preview review
+on:
+  push:
+    branches:
+      - 'fix/launch-readiness-20261009'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate browser-only builder syntax
+        run: node --check launch/builder.js
+      - name: Run security and behaviour regression tests
+        run: node --test tests/launch-preview.test.cjs
+      - name: Confirm expected deployment payload
+        run: |
+          test -s launch/index.html
+          test -s launch/builder.html
+          test -s launch/styles.css
+          test -s launch/privacy.html
+          test -s launch/terms.html
