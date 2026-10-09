@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Build, preview and export a one-page website from your browser."><meta name="theme-color" content="#0b1020"><title>Preview Builder | Fenton Forge</title><link rel="stylesheet" href="./styles.css"><script defer src="./builder.js"></script></head>
+<body><a class="skip" href="#main">Skip to content</a><header class="topbar"><a class="brand" href="./index.html"><span class="brand-icon">F</span><span>FENTON <b>FORGE</b><small>BY FENTON CREATIVE LTD.</small></span></a><nav><a href="./index.html">← Home</a><a href="mailto:hello@fenton-creative.co">Contact</a></nav></header>
+<main id="main" class="container"><div class="page-heading"><p class="eyebrow">LOCAL-ONLY PREVIEW BUILDER</p><h1>Make it yours.</h1><p class="lead">Enter your details, preview the design and download your HTML. This prototype has no customer accounts, payments or hosted publishing.</p></div>
+<div class="builder-layout"><section class="panel" aria-labelledby="form-title"><h2 id="form-title">Website details</h2>
+<form id="site-form"><label class="field">Name of website or organisation *<input type="text" name="name" value="Your Business" maxlength="80" required autocomplete="organization"></label>
+<label class="field">Headline *<input type="text" name="headline" value="A better way to do great work" maxlength="130" required></label>
+<label class="field">About your organisation *<textarea name="description" maxlength="800" required>We bring care, experience and practical thinking to every project. Tell your visitors what makes your work valuable.</textarea></label>
+<label class="field">Services or highlights (one per line)<textarea name="services" maxlength="900">Friendly advice
+Thoughtful delivery
+Reliable support</textarea></label>
+<label class="field">Email contact (optional)<input type="email" name="email" maxlength="180" autocomplete="email" placeholder="hello@example.com"></label>
+<label class="field">Brand colour<input type="color" name="accent" value="#176f85"></label>
+<div class="actions"><button type="submit" class="button primary">Update preview</button><button type="button" id="download" class="button ghost">Download HTML ↓</button></div><p id="status" class="fine" aria-live="polite" role="status">Your information is processed only in this browser.</p></form></section>
+<section class="panel preview-panel" aria-labelledby="preview-title"><h2 id="preview-title">Your website preview</h2><iframe id="site-preview" title="Preview of your generated website" sandbox="" class="preview-frame"></iframe><p class="fine">The downloaded HTML is an editable starting point. It does not include hosting, a live contact form, domain configuration or AI-powered services.</p></section></div></main>
+<footer><div class="container foot"><span>© 2026 Fenton Creative Ltd · Preview only</span><div><a href="./privacy.html">Privacy</a><a href="./terms.html">Terms</a></div></div></footer></body></html>
