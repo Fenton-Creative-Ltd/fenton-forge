@@ -20,9 +20,9 @@ The still scene appears first. Video source assignment and decoding wait until a
 
 ## Verification
 
-32 automated browser assertions passed in headless Chromium, 1440×1000 desktop and 390×844 mobile emulation. browser-results.json contains the exact results and measurements. Screenshots include all three worlds and both builder layouts. No browser errors or unexpected external requests were observed. Credential-pattern scanning found no common private-key/API-token patterns in the prototype. That is a scoped check, not a security audit of the older repository.
+56 automated browser assertions passed in headless Chromium, 1440×1000 desktop and 390×844 mobile emulation. browser-results.json contains the exact results and measurements. Screenshots include all three worlds and both builder layouts. No browser errors or unexpected external requests were observed. Credential-pattern scanning found no common private-key/API-token patterns in the prototype. That is a scoped check, not a security audit of the older repository.
 
-Measured local initial LCP: 1.188 seconds. CLS: 0. Sampled engine drawing: median 0.50 ms, p95 0.80 ms, 6 samples. These are local lab measurements, not real-device Safari, sustained frame-rate, field p75 Core Web Vitals or INP measurements.
+Measured local initial LCP: 0.932 seconds. CLS: 0. Sampled engine drawing: median 0.40 ms, p95 0.60 ms, 7 samples. These are local lab measurements, not real-device Safari, sustained frame-rate, field p75 Core Web Vitals or INP measurements.
 
 | Mandatory scenario | Evidence |
 |---|---|
@@ -61,3 +61,7 @@ Next: run the five-second clarity and desire-to-create test with visitors, measu
 ## Run tests
 
 Install Playwright in a separate tool environment and its Chromium browser. Serve this directory with python3 -m http.server 8765, then run node test-browser.cjs. CODEX_PRIMARY_RUNTIME_NODE_MODULES can resolve the installed runtime; FORGE_BROWSER_EXECUTABLE can select an existing Chromium binary. Do not run the repository's experimental API server to review this prototype.
+
+## Controls refinement after creative review
+
+Accent now affects the visible header rule, hero underline, accessible hero label, service-card edges and contact button. Guide recipe buttons reveal their transformed hero instead of leaving the change off-screen. Selecting a procedural environment explicitly switches to Forge Signature; users can choose Nature again to retain their selected effect over footage. Palette changes tint photographic/artistic scenes, and stronger compositing makes intensity meaningful. Builder palette, accent and layout settings now survive header navigation. Added browser checks cover all nine modes, all eight palettes, visible accent and photo tint, Guide navigation and retained selections.

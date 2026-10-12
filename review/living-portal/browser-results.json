@@ -53,6 +53,94 @@
       "passed": true
     },
     {
+      "name": "Guide recipe reveals changed hero",
+      "passed": true
+    },
+    {
+      "name": "Procedural selection visibly reveals Forge Signature",
+      "passed": true
+    },
+    {
+      "name": "Builder mode aurora",
+      "passed": true
+    },
+    {
+      "name": "Builder mode cosmos-sea",
+      "passed": true
+    },
+    {
+      "name": "Builder mode neural-lattice",
+      "passed": true
+    },
+    {
+      "name": "Builder mode liquid-glass",
+      "passed": true
+    },
+    {
+      "name": "Builder mode nebula",
+      "passed": true
+    },
+    {
+      "name": "Builder mode waves",
+      "passed": true
+    },
+    {
+      "name": "Builder mode particles",
+      "passed": true
+    },
+    {
+      "name": "Builder mode constellation",
+      "passed": true
+    },
+    {
+      "name": "Builder mode ai-thinking",
+      "passed": true
+    },
+    {
+      "name": "Builder palette ocean",
+      "passed": true
+    },
+    {
+      "name": "Builder palette violet",
+      "passed": true
+    },
+    {
+      "name": "Builder palette nebula",
+      "passed": true
+    },
+    {
+      "name": "Builder palette cosmos",
+      "passed": true
+    },
+    {
+      "name": "Builder palette aqua",
+      "passed": true
+    },
+    {
+      "name": "Builder palette ember",
+      "passed": true
+    },
+    {
+      "name": "Builder palette mono",
+      "passed": true
+    },
+    {
+      "name": "Builder palette shield",
+      "passed": true
+    },
+    {
+      "name": "Accent colour changes visible hero highlight",
+      "passed": true
+    },
+    {
+      "name": "Accent colour changes visible header line",
+      "passed": true
+    },
+    {
+      "name": "Palette visibly tints photographic environment",
+      "passed": true
+    },
+    {
       "name": "Repeated builder CTA preserves edits",
       "passed": true
     },
@@ -66,6 +154,14 @@
     },
     {
       "name": "Desktop builder header #content",
+      "passed": true
+    },
+    {
+      "name": "Builder palette survives header navigation",
+      "passed": true
+    },
+    {
+      "name": "Accent survives header navigation",
       "passed": true
     },
     {
@@ -131,13 +227,13 @@
   ],
   "metrics": {
     "cls": 0,
-    "lcp": 1188,
+    "lcp": 932,
     "navigation": {
       "name": "http://localhost:8765/",
       "entryType": "navigation",
       "startTime": 0,
-      "duration": 661.1999999997206,
-      "navigationId": 5421,
+      "duration": 513.2000000001863,
+      "navigationId": 3041,
       "initiatorType": "navigation",
       "deliveryType": "",
       "nextHopProtocol": "http/1.0",
@@ -151,30 +247,30 @@
       "workerFinalSourceType": "",
       "redirectStart": 0,
       "redirectEnd": 0,
-      "fetchStart": 0.19999999972060323,
-      "domainLookupStart": 3.6999999997206032,
-      "domainLookupEnd": 3.8999999999068677,
-      "connectStart": 3.8999999999068677,
+      "fetchStart": 0.2999999998137355,
+      "domainLookupStart": 1.1000000000931323,
+      "domainLookupEnd": 1.2999999998137355,
+      "connectStart": 1.2999999998137355,
       "secureConnectionStart": 0,
-      "connectEnd": 4,
-      "requestStart": 4.099999999627471,
-      "responseStart": 7.2999999998137355,
+      "connectEnd": 1.8999999999068677,
+      "requestStart": 2,
+      "responseStart": 4.7000000001862645,
       "firstInterimResponseStart": 0,
-      "finalResponseHeadersStart": 7.2999999998137355,
-      "responseEnd": 11.199999999720603,
-      "transferSize": 1244780,
-      "encodedBodySize": 1244480,
-      "decodedBodySize": 1244480,
+      "finalResponseHeadersStart": 4.7000000001862645,
+      "responseEnd": 10.200000000186265,
+      "transferSize": 1247502,
+      "encodedBodySize": 1247202,
+      "decodedBodySize": 1247202,
       "responseStatus": 200,
       "serverTiming": [],
       "unloadEventStart": 0,
       "unloadEventEnd": 0,
-      "domInteractive": 661.0999999996275,
-      "domContentLoadedEventStart": 661.0999999996275,
-      "domContentLoadedEventEnd": 661.1999999997206,
-      "domComplete": 661.1999999997206,
-      "loadEventStart": 661.1999999997206,
-      "loadEventEnd": 661.1999999997206,
+      "domInteractive": 512.8999999999069,
+      "domContentLoadedEventStart": 512.8999999999069,
+      "domContentLoadedEventEnd": 512.8999999999069,
+      "domComplete": 512.8999999999069,
+      "loadEventStart": 513.2000000001863,
+      "loadEventEnd": 513.2000000001863,
       "type": "navigate",
       "redirectCount": 0,
       "activationStart": 0,
@@ -182,13 +278,13 @@
       "notRestoredReasons": null,
       "confidence": {
         "randomizedTriggerRate": 0.4994798,
-        "value": "high"
+        "value": "low"
       }
     },
     "render": {
-      "samples": 6,
-      "drawMedianMs": 0.5,
-      "drawP95Ms": 0.7999999998137355
+      "samples": 7,
+      "drawMedianMs": 0.39999999990686774,
+      "drawP95Ms": 0.6000000000931323
     }
   },
   "errors": [],
