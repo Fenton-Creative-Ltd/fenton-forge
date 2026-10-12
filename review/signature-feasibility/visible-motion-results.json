@@ -1,0 +1,19 @@
+[
+  {
+    "file": "index.html",
+    "duration": "16s",
+    "first": "matrix(1.04033, 0, 0, 1.04033, -0.100115, 0.0518161)",
+    "afterFourSeconds": "matrix(1.11624, 0, 0, 1.11624, -24.5079, 12.6845)",
+    "scaleChange": 0.07590999999999992
+  },
+  {
+    "file": "independent-example.html",
+    "duration": "16s",
+    "first": "matrix(1.04033, 0, 0, 1.04033, -0.100095, 0.0321693)",
+    "afterFourSeconds": "matrix(1.11825, 0, 0, 1.11825, -25.2012, 8.09935)",
+    "scaleChange": 0.07791999999999999
+  },
+  {
+    "reducedMotion": "static confirmed"
+  }
+]

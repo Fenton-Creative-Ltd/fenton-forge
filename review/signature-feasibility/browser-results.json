@@ -91,12 +91,12 @@
   ],
   "metrics": {
     "cls": 0,
-    "lcp": 376,
-    "bytes": 258247,
+    "lcp": 360,
+    "bytes": 258243,
     "render": {
-      "samples": 6,
-      "medianMs": 0.7999999999301508,
-      "p95Ms": 1
+      "samples": 5,
+      "medianMs": 0.6000000000931323,
+      "p95Ms": 0.7999999998137355
     }
   },
   "errors": [],

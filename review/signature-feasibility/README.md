@@ -60,3 +60,6 @@ Serve this directory with python3 -m http.server 8876. Run test-browser.cjs with
 
 ## Staged media integration update
 See [MEDIA-INTEGRATION.md](MEDIA-INTEGRATION.md) for the completed provider comparison, code-reuse audit and secure adapter proposal. The optional image uses prepared artwork; optional animation is an explicitly labelled browser simulation. No paid AI video has been produced. Six offline request-contract assertions also pass.
+
+## Motion correction — iteration 2
+Initial 93-second drift was not perceptible in product-owner review. Replaced with a 16-second default cycle and larger camera movement; four-second timed checks record approximately 7.6% scale change and 25px horizontal movement in preview and export. Reduced motion remains static. All 22 browser assertions pass. Current run: local LCP 360ms, CLS 0; earlier measurements above belong to the previous iteration. See visible-motion-results.json and paired screenshots. User Safari perceptibility approval remains pending.
