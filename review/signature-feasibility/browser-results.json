@@ -1,0 +1,105 @@
+{
+  "tests": [
+    {
+      "name": "Actual v4 engine runs",
+      "passed": true
+    },
+    {
+      "name": "AI art is embedded and decoded",
+      "passed": true
+    },
+    {
+      "name": "Instant stage uses actual procedural engine without AI still",
+      "passed": true
+    },
+    {
+      "name": "Optional prepared image is static and honestly labelled",
+      "passed": true
+    },
+    {
+      "name": "Optional animation simulation is labelled as browser motion",
+      "passed": true
+    },
+    {
+      "name": "Three-word transformation is reproducible",
+      "passed": true
+    },
+    {
+      "name": "Golden recipe changes actual engine palette",
+      "passed": true
+    },
+    {
+      "name": "Different recipe changes light and movement",
+      "passed": true
+    },
+    {
+      "name": "Colour and interface share a config",
+      "passed": true
+    },
+    {
+      "name": "Motion control stops engine and photo",
+      "passed": true
+    },
+    {
+      "name": "Site name handles input as text",
+      "passed": true
+    },
+    {
+      "name": "Website headline remains editable",
+      "passed": true
+    },
+    {
+      "name": "Export retains current config and removes prototype controls",
+      "passed": true
+    },
+    {
+      "name": "Independent file has artwork and real animation",
+      "passed": true
+    },
+    {
+      "name": "Independent export retains selected media stage",
+      "passed": true
+    },
+    {
+      "name": "Independent file retains authored text",
+      "passed": true
+    },
+    {
+      "name": "Mobile has no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion uses static art",
+      "passed": true
+    },
+    {
+      "name": "Independent export respects reduced motion",
+      "passed": true
+    },
+    {
+      "name": "No exposed API/private key patterns",
+      "passed": true
+    },
+    {
+      "name": "No unexpected external network",
+      "passed": true
+    },
+    {
+      "name": "No browser errors",
+      "passed": true
+    }
+  ],
+  "metrics": {
+    "cls": 0,
+    "lcp": 376,
+    "bytes": 258247,
+    "render": {
+      "samples": 6,
+      "medianMs": 0.7999999999301508,
+      "p95Ms": 1
+    }
+  },
+  "errors": [],
+  "external": [],
+  "limitations": "Local headless Chromium; real Safari, mobile GPU/CPU, INP and field CWV not measured."
+}
