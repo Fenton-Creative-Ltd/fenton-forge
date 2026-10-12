@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en-GB">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Fenton Forge Studio Editorial homepage prototype. Isolated design direction, not a live product.">
+<meta name="theme-color" content="#fffdf8">
+<title>Direction B | Fenton Forge</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root{--bg:#fffdf8;--ink:#10131a;--muted:#546068;--line:rgba(15,22,30,.14);--accent:#0b656e;--accent-2:#f5c15a;--surface:#fff}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.64}
+*:focus-visible{outline:3px solid #116f7b;outline-offset:4px}
+.skip{position:absolute;top:-100px;left:12px;z-index:100;padding:12px 18px;background:#116f7b;color:#fff}
+.skip:focus{top:12px}
+.container{width:min(1100px,calc(100% - 36px));margin-inline:auto}
+header{background:rgba(255,253,248,.92);border-bottom:1px solid var(--line)}
+.nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:820;letter-spacing:.08em}
+.brand svg{width:42px;height:42px}
+.brand b{color:var(--accent)}
+.brand small{display:block;color:var(--muted);font-size:.56rem;letter-spacing:.16em;margin-top:6px}
+nav ul{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+nav a{color:var(--muted);text-decoration:none;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:660}
+nav a:hover{color:#116f7b}
+nav .cta{border:1px solid #0d656e;border-radius:8px;background:#0d656e;color:#fff;padding:10px 14px}
+nav .cta:hover{background:#0b525a;color:#fff}
+.hero{padding:84px 0 72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.85fr);gap:52px;align-items:center}
+.badge{display:block;color:#866300;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.78rem;font-weight:780;letter-spacing:.09em;margin-bottom:16px}
+.eyebrow{display:inline-block;color:#116f7b;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.75rem;letter-spacing:.17em;text-transform:uppercase;font-weight:800}
+h1{font-family:"New York",Georgia,serif;font-size:clamp(2.9rem,6.2vw,5.4rem);line-height:1.05;letter-spacing:-.05em;margin:18px 0 24px;max-width:720px}
+h1 .accent{color:#116f7b}
+.lead{color:var(--muted);font-size:clamp(1.08rem,1.5vw,1.3rem);max-width:620px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0 18px}
+.button{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--accent);min-height:52px;padding:12px 22px;border-radius:9px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:750;text-decoration:none}
+.button.primary{background:#0b656e;color:#fff;border-color:#0b656e}
+.button.primary:hover{background:#084f5a;border-color:#084f5a}
+.button.secondary{color:#0b656e;background:transparent;border-color:#0b656e}
+.button.secondary:hover{background:#f8fdff;color:#084f5a}
+.note{color:var(--muted);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.84rem}
+.stage{position:relative;border:1px solid #d6d5c5;border-radius:22px;background:#fffbf1;box-shadow:0 28px 62px rgba(20,24,29,.11);overflow:hidden}
+.stage-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #dfe2d1;background:#fff6e6;color:#866300;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.68rem;letter-spacing:.1em;font-weight:700}
+.stage-main{padding:30px 28px 36px}
+.stage-main h2{font-size:clamp(1.75rem,3vw,2.25rem);letter-spacing:-.045em;margin:12px 0}
+.stage-main p{color:var(--muted);font-size:.94rem}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:28px}
+.swatches i{height:40px;border:1px solid rgba(0,0,0,.08)}
+.swatches i:nth-child(1){background:#0b656e}
+.swatches i:nth-child(2){background:#f5c15a}
+.swatches i:nth-child(3){background:#f6f8f8}
+.swatches i:nth-child(4){background:#111315}
+.labels{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;color:#546068;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.66rem;letter-spacing:.05em;margin-top:5px}
+section{padding:64px 0 72px;border-top:1px solid var(--line)}
+.section-label{display:block;color:#116f7b;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.73rem;letter-spacing:.17em;font-weight:800;text-transform:uppercase}
+section h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.12;letter-spacing:-.05em;margin:14px 0 18px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:34px}
+.tile{border:1px solid #dcded0;border-radius:16px;padding:24px;background:#fff}
+.tile h3{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:1.18rem;letter-spacing:-.01em;margin:12px 0 6px}
+.tile p{color:var(--muted);margin:0;font-size:.92rem}
+.callout{margin-top:34px;padding:28px;border-radius:18px;background:#fff6e6;border:1px solid #f5c15a}
+.callout h3{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:1.18rem;margin:0 0 8px}
+.callout p{color:#4a4038;margin:0;font-size:.96rem}
+.note-list{padding-left:20px;color:var(--muted)}
+.note-list li+li{margin-top:8px}
+.close{padding:56px 0 72px}
+.close h2{margin:14px 0 18px}
+footer{border-top:1px solid var(--line);background:#fff}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:22px 0;color:#546068;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.77rem}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding-top:72px}.stage{margin-left:0}}
+@media(max-width:620px){.nav{align-items:flex-start;flex-direction:column;gap:14px}.hero{padding:58px 0 54px}.grid{grid-template-columns:1fr}.stage-main{padding:20px}.swatches{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="container nav">
+  <a class="brand" href="#main" aria-label="Fenton Forge prototype home">
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="64" height="64" rx="13" fill="#fffbe6" stroke="#8aa4a6" stroke-width="1.5"/>
+      <path d="M16 13h31v9H26v10h17v9H26v12H16V13Z" fill="#0b656e"/>
+      <path d="M43 13h6v9h-6z" fill="#f5c15a"/>
+    </svg>
+    <span>FENTON <b>FORGE</b><small>BY FENTON CREATIVE LTD.</small></span>
+  </a>
+  <nav aria-label="Main navigation">
+    <ul>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#who">Who it’s for</a></li>
+      <li><a href="#status">Release status</a></li>
+      <li><a class="cta" href="#next">Next step</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main">
+  <div class="container hero">
+    <div>
+      <span class="badge">DIRECTION B · SELECTED · NOT LIVE</span>
+      <span class="eyebrow">Studio Editorial</span>
+      <h1>Clear ideas, calmly <span class="accent">presented.</span></h1>
+      <p class="lead">A warm editorial direction that prioritises understanding over spectacle. It keeps the Fenton identity and reads well in daylight, on mobile and with reduced motion.</p>
+      <div class="actions">
+        <a class="button primary" href="#next">See the next step →</a>
+        <a class="button secondary" href="#status">What’s real now</a>
+      </div>
+      <p class="note">Static prototype. No AI generation, accounts, payments or managed hosting are part of this review.</p>
+    </div>
+    <figure class="stage" aria-label="Studio Editorial design preview">
+      <div class="stage-head"><span>THE FORGE · EXAMPLE</span><span>DESIGN SYSTEM</span></div>
+      <div class="stage-main">
+        <h2>Your story, clearly shaped.</h2>
+        <p>A considered starting place for a one-page responsive site you control.</p>
+        <div class="swatches" role="img" aria-label="Four Fenton colour swatches"><i></i><i></i><i></i><i></i></div>
+        <div class="labels"><span>Teal</span><span>Amber</span><span>Paper</span><span>Ink</span></div>
+      </div>
+    </figure>
+  </div>
+
+  <section class="container" id="how">
+    <span class="section-label">How it works</span>
+    <h2>Read it. Shape it. Carry it with you.</h2>
+    <p class="lead">A homepage prototype that shows the promise without inventing new capabilities.</p>
+    <div class="grid">
+      <article class="tile"><h3>Say what matters</h3><p>Visitors see the purpose before they scroll.</p></article>
+      <article class="tile"><h3>Preview the outcome</h3><p>A simple visual stands in for real design impact.</p></article>
+      <article class="tile"><h3>Keep the next step obvious</h3><p>The CTA stays above the fold on desktop and mobile.</p></article>
+    </div>
+  </section>
+
+  <section class="container" id="who">
+    <span class="section-label">Who it’s for</span>
+    <h2>For people with something to share.</h2>
+    <p class="lead">Example audiences for the eventual service, not separate finished products or current paid plans.</p>
+    <div class="grid">
+      <article class="tile"><h3>Creative individuals</h3><p>Portfolios and independent ideas.</p></article>
+      <article class="tile"><h3>Local organisations</h3><p>Small services and community groups.</p></article>
+      <article class="tile"><h3>Mixed experience</h3><p>Accessible enough to be used without prior design knowledge.</p></article>
+    </div>
+  </section>
+
+  <section class="container" id="status">
+    <span class="section-label">Release status</span>
+    <h2>Honest at first glance.</h2>
+    <p class="lead">This prototype is isolated from the live tested preview and is not connected to any AI builder, payment or hosting system.</p>
+    <div class="callout">
+      <h3>What is real today</h3>
+      <p>The current tested static release remains the live baseline. This page is a design direction, not a deployment.</p>
+    </div>
+  </section>
+
+  <section class="container" id="next">
+    <span class="section-label">Next step</span>
+    <h2>Begin the visual decision.</h2>
+    <p class="lead">If this direction is approved, connect the CTA to the existing local builder and measure the real journey.</p>
+    <div class="grid">
+      <article class="tile"><h3>Integrate</h3><p>Bring this direction into the tested static release as a candidate homepage.</p></article>
+      <article class="tile"><h3>Test</h3><p>Run the homepage checks and the five-second clarity test.</p></article>
+      <article class="tile"><h3>Approve</h3><p>Only then prepare a reviewed branch and deployment plan.</p></article>
+    </div>
+  </section>
+</main>
+<footer><div class="container foot"><span>© 2026 Fenton Creative Ltd. · Isolated review prototype</span><div><a href="index.html">Back to review</a></div></div></footer>
+</body>
+</html>
