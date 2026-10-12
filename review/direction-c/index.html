@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en-GB">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Fenton Forge Living Showcase prototype. Interactive visual style direction, not a live product.">
+<meta name="theme-color" content="#0b1220">
+<title>Living Showcase Prototype | Fenton Forge</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root{--bg:#0b1220;--fg:#f4faff;--muted:#c7d2de;--accent:#68e3f1;--accent2:#f7cc73;--line:rgba(167,195,210,.18);--surface:rgba(12,20,31,.86)}
+body[data-style="studio"]{--bg:#fffdf8;--fg:#10131a;--muted:#546068;--accent:#0b656e;--accent2:#f5c15a;--line:rgba(15,22,30,.14);--surface:#fff}
+body[data-style="canvas"]{--bg:#f7f3ea;--fg:#1c2733;--muted:#536066;--accent:#e2542d;--accent2:#3f7fd7;--line:rgba(30,39,51,.16);--surface:#fff}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65;min-height:100vh}
+*:focus-visible{outline:3px solid var(--accent2);outline-offset:4px}
+.skip{position:absolute;top:-120px;left:12px;padding:12px 18px;background:var(--accent2);color:#111;z-index:100}
+.skip:focus{top:12px}
+.container{width:min(1100px,calc(100% - 36px));margin-inline:auto}
+header{border-bottom:1px solid var(--line);padding:18px 0;background:var(--surface)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{font-weight:820;letter-spacing:.08em;color:var(--fg);text-decoration:none}
+.brand b{color:var(--accent)}
+.brand small{display:block;color:var(--muted);font-size:.58rem;letter-spacing:.16em;margin-top:6px}
+.nav ul{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.nav a{color:var(--muted);text-decoration:none;font-weight:650}
+.nav a:hover,nav a[aria-current="true"]{color:var(--accent)}
+.nav .cta{border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:#fff;padding:9px 13px;font-weight:750}
+main{padding:58px 0 70px}
+.hero{display:grid;grid-template-columns:1fr;gap:32px}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;background:rgba(104,227,241,.12);color:var(--accent);font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+h1{font-size:clamp(2.3rem,5vw,4.4rem);line-height:1.1;margin:16px 0 20px}
+h1 .accent{color:var(--accent)}
+.lead{max-width:660px;color:var(--muted);font-size:clamp(1.02rem,1.35vw,1.22rem)}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 16px}
+.button{display:inline-flex;gap:10px;align-items:center;min-height:50px;padding:12px 20px;border-radius:10px;font-weight:750;text-decoration:none;border:1px solid var(--accent);background:var(--accent);color:#fff}
+.button.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.note{color:var(--muted);font-size:.86rem}
+.style-switcher{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.style-switcher button{padding:10px 16px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--fg);cursor:pointer;font-weight:700;transition:border-color .2s ease,background .2s ease,color .2s ease}
+.style-switcher button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 15%, transparent);color:var(--accent)}
+.stage{border:1px solid var(--line);border-radius:22px;padding:32px;background:var(--surface);box-shadow:0 34px 80px rgba(0,0,0,.09)}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:18px;font-size:.71rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.stage-main{margin-top:26px}
+.stage-main h2{font-size:clamp(1.7rem,3vw,2.4rem);margin:0 0 12px}
+.stage-main p{color:var(--muted);max-width:640px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0 0}
+.chips span{border:1px solid var(--line);border-radius:8px;padding:6px 9px;background:rgba(255,255,255,.05);font-size:.72rem;color:var(--muted)}
+.status{margin-top:16px;padding:12px 16px;border-radius:12px;background:color-mix(in srgb,var(--accent) 12%, transparent);color:var(--accent);font-weight:700;display:inline-block}
+.section{border-top:1px solid var(--line);padding:64px 0 72px}
+.section-label{display:block;color:var(--accent);font-size:.73rem;letter-spacing:.17em;text-transform:uppercase;font-weight:800}
+.section h2{font-size:clamp(2rem,4vw,3.1rem);line-height:1.12;letter-spacing:-.05em;margin:12px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.tile{border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--surface)}
+.tile h3{margin:0 0 8px;font-size:1.12rem}
+.tile p{margin:0;color:var(--muted);font-size:.94rem}
+.callout{margin-top:30px;border:1px solid var(--accent2);border-radius:18px;padding:24px;background:color-mix(in srgb,var(--accent2) 10%, transparent)}
+.callout h3{margin:0 0 8px}
+.callout p{margin:0;color:var(--muted)}
+.close{padding:56px 0 72px}
+.close h2{margin:12px 0 16px}
+footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:.78rem;background:var(--surface)}
+footer .foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+@media(max-width:840px){.grid{grid-template-columns:1fr}.nav{align-items:flex-start;flex-direction:column}.stage{padding:22px}}
+@media(max-width:560px){.container{width:min(100% - 28px,1100px)}.hero{padding-top:38px}.actions{margin:18px 0 10px}.stage{padding:18px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body data-style="atmosphere">
+<a class="skip" href="#main">Skip to main content</a>
+<header class="container nav" role="banner">
+  <a class="brand" href="#main" aria-label="Fenton Forge prototype home">FENTON <b>FORGE</b><small>BY FENTON CREATIVE LTD.</small></a>
+  <nav aria-label="Main navigation">
+    <ul>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#who">Who it’s for</a></li>
+      <li><a href="#status">Release status</a></li>
+      <li><a class="cta" href="#start">Start creating</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main">
+  <section class="container hero">
+    <span class="badge">Direction C · Living Showcase · Not live</span>
+    <h1>Show, don’t <span class="accent">overpromise.</span></h1>
+    <p class="lead">A self-contained homepage prototype. Switch the visual style, see the local design system respond, then continue naturally into the existing builder.</p>
+    <div class="style-switcher" role="group" aria-label="Visual style">
+      <button type="button" data-style="atmosphere" aria-pressed="true">Atmosphere</button>
+      <button type="button" data-style="studio" aria-pressed="false">Studio</button>
+      <button type="button" data-style="canvas" aria-pressed="false">Canvas</button>
+    </div>
+    <p class="status" role="status" aria-live="polite" id="style-status">Atmosphere style active · Local preview only.</p>
+  </section>
+
+  <section class="container stage" aria-label="Live visual preview">
+    <div class="stage-head"><span>Live visual preview</span><span>Local system</span></div>
+    <div class="stage-main">
+      <h2>Put the visual engine to <span style="color:var(--accent)">work.</span></h2>
+      <p>This demonstrates the feeling Forge can create. It does not describe the current builder as AI-powered and does not send data anywhere.</p>
+      <div class="chips"><span>Immediate paint</span><span>Local preview</span><span>No data sent</span></div>
+    </div>
+  </section>
+
+  <section class="container section" id="how">
+    <span class="section-label">How it works</span>
+    <h2>Every effect belongs to the product.</h2>
+    <p class="lead">The style switcher uses the same visual language as the builder. No remote generation, no accounts, no payments and no managed hosting are claimed.</p>
+    <div class="grid">
+      <article class="tile"><h3>Atmosphere</h3><p>Dark, calm and premium. Strong impact for hero moments.</p></article>
+      <article class="tile"><h3>Studio</h3><p>Light, editorial and high contrast. Strong clarity in daylight.</p></article>
+      <article class="tile"><h3>Canvas</h3><p>Expressive and energetic. Strong visual rhythm for creative work.</p></article>
+    </div>
+  </section>
+
+  <section class="container section" id="who">
+    <span class="section-label">Who it’s for</span>
+    <h2>Creators, makers and local organisations.</h2>
+    <p class="lead">These are example audiences for the eventual service, not separate current products or paid plans.</p>
+    <div class="grid">
+      <article class="tile"><h3>Creative individuals</h3><p>Artists, makers and freelancers.</p></article>
+      <article class="tile"><h3>Local services</h3><p>Small businesses and consultants.</p></article>
+      <article class="tile"><h3>Community groups</h3><p>Voluntary organisations and social enterprises.</p></article>
+    </div>
+  </section>
+
+  <section class="container section" id="status">
+    <span class="section-label">Release status</span>
+    <h2>Honest at first glance.</h2>
+    <p class="lead">This is an isolated design preview. It does not connect to AI creation, accounts, payments, subscriptions, managed hosting or publishing.</p>
+    <div class="callout"><h3>Current truth</h3><p>The tested Hostinger static preview remains the live baseline. This page is a design direction, not a deployment.</p></div>
+  </section>
+
+  <section class="container close" id="start">
+    <span class="section-label">Next step</span>
+    <h2>Continue into the existing builder.</h2>
+    <p class="lead">The CTA points to the current local builder. Nothing on this page replaces it.</p>
+    <a class="button" href="/builder.html">Start creating →</a>
+  </section>
+</main>
+<footer>
+  <div class="container foot">
+    <span>© 2026 Fenton Creative Ltd · Isolated review prototype</span>
+    <div>
+      <a href="/direction-b-editorial.html">Direction B</a>
+      <a href="/direction-a-aurora.html">Direction A</a>
+    </div>
+  </div>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const buttons=[...document.querySelectorAll('[data-style]')];
+  const status=document.getElementById('style-status');
+  if(!status) return;
+  const apply=(val)=>{
+    document.body.dataset.style=val;
+    buttons.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.style===val)));
+    status.textContent=`${btn.textContent.trim()} style active · Local preview only.`;
+  };
+  buttons.forEach(btn=>btn.addEventListener('click',()=>apply(btn.dataset.style)));
+});
+</script>
+</body>
+</html>
