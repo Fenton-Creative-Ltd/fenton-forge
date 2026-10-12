@@ -92,10 +92,10 @@
   "metrics": {
     "cls": 0,
     "lcp": 360,
-    "bytes": 258243,
+    "bytes": 260057,
     "render": {
-      "samples": 5,
-      "medianMs": 0.6000000000931323,
+      "samples": 8,
+      "medianMs": 0.5,
       "p95Ms": 0.7999999998137355
     }
   },

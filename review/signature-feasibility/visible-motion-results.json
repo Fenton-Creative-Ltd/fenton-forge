@@ -1,19 +1,21 @@
 [
   {
     "file": "index.html",
-    "duration": "16s",
-    "first": "matrix(1.04033, 0, 0, 1.04033, -0.100115, 0.0518161)",
-    "afterFourSeconds": "matrix(1.11624, 0, 0, 1.11624, -24.5079, 12.6845)",
-    "scaleChange": 0.07590999999999992
+    "cameraTransform": "none",
+    "canvasPixelsChanged": true,
+    "phaseBefore": 1.035,
+    "phaseAfter": 7.015000000000009,
+    "frames": 61
   },
   {
     "file": "independent-example.html",
-    "duration": "16s",
-    "first": "matrix(1.04033, 0, 0, 1.04033, -0.100095, 0.0321693)",
-    "afterFourSeconds": "matrix(1.11825, 0, 0, 1.11825, -25.2012, 8.09935)",
-    "scaleChange": 0.07791999999999999
+    "cameraTransform": "none",
+    "canvasPixelsChanged": true,
+    "phaseBefore": 0.886635,
+    "phaseAfter": 7.076454999999991,
+    "frames": 82
   },
   {
-    "reducedMotion": "static confirmed"
+    "reducedMotion": "camera and procedural scene static confirmed"
   }
 ]

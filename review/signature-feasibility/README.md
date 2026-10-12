@@ -63,3 +63,8 @@ See [MEDIA-INTEGRATION.md](MEDIA-INTEGRATION.md) for the completed provider comp
 
 ## Motion correction — iteration 2
 Initial 93-second drift was not perceptible in product-owner review. Replaced with a 16-second default cycle and larger camera movement; four-second timed checks record approximately 7.6% scale change and 25px horizontal movement in preview and export. Reduced motion remains static. All 22 browser assertions pass. Current run: local LCP 360ms, CLS 0; earlier measurements above belong to the previous iteration. See visible-motion-results.json and paired screenshots. User Safari perceptibility approval remains pending.
+
+## Stationary-camera internal movement — iteration 3
+The earlier zoom/pan was an animated still-image placeholder, not final environmental animation. The current camera is fixed. A dedicated Canvas compositing layer produces drifting mist and moving light motes inside the environment; the unchanged actual Visual Engine v4 provides its procedural atmosphere. The underlying AI artwork remains static: water, leaves and glass geometry do not physically animate. This demonstrates category 3 procedural scene movement, not category 2 AI video. Category 1 zoom/pan is now disabled.
+
+The timed diagnostic checks unchanged image transform (`none`) and changed Canvas pixels/phase after four seconds, in both review and independent export. Reduced motion stops scene updates. Export includes the local scene renderer and artwork; no server/API dependency. Existing 22 browser assertions pass. New local LCP 420ms, CLS 0; Safari/mobile perception remains product-owner/manual testing. Genuine flowing-water image-to-video remains a separately approved trial.
