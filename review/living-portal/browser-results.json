@@ -1,0 +1,197 @@
+{
+  "results": [
+    {
+      "name": "Real v4 custom element running",
+      "passed": true
+    },
+    {
+      "name": "Real nature video plays silently",
+      "passed": true
+    },
+    {
+      "name": "Homepage header #gallery",
+      "passed": true
+    },
+    {
+      "name": "Homepage header #how",
+      "passed": true
+    },
+    {
+      "name": "Homepage header #content",
+      "passed": true
+    },
+    {
+      "name": "Distinct environment imagination",
+      "passed": true
+    },
+    {
+      "name": "Distinct environment signature",
+      "passed": true
+    },
+    {
+      "name": "Distinct environment nature",
+      "passed": true
+    },
+    {
+      "name": "Three words reproducible",
+      "passed": true
+    },
+    {
+      "name": "Three words meaningfully change world palette lighting speed",
+      "passed": true
+    },
+    {
+      "name": "Visitor can pause all nature motion",
+      "passed": true
+    },
+    {
+      "name": "Gallery controls update actual engine",
+      "passed": true
+    },
+    {
+      "name": "Experience transfers into builder",
+      "passed": true
+    },
+    {
+      "name": "Repeated builder CTA preserves edits",
+      "passed": true
+    },
+    {
+      "name": "Desktop builder header #gallery",
+      "passed": true
+    },
+    {
+      "name": "Desktop builder header #how",
+      "passed": true
+    },
+    {
+      "name": "Desktop builder header #content",
+      "passed": true
+    },
+    {
+      "name": "Export button creates portable HTML download",
+      "passed": true
+    },
+    {
+      "name": "Input escaped in export",
+      "passed": true
+    },
+    {
+      "name": "Independent export renders editable content and engine",
+      "passed": true
+    },
+    {
+      "name": "Export preserves world and palette",
+      "passed": true
+    },
+    {
+      "name": "Independent export retains actual natural video playback",
+      "passed": true
+    },
+    {
+      "name": "Photographic export is embedded and independent",
+      "passed": true
+    },
+    {
+      "name": "Mobile has no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "Mobile builder header #gallery",
+      "passed": true
+    },
+    {
+      "name": "Mobile builder header #how",
+      "passed": true
+    },
+    {
+      "name": "Mobile builder header #content",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion pauses real video",
+      "passed": true
+    },
+    {
+      "name": "Reduced motion stops engine and photo animation",
+      "passed": true
+    },
+    {
+      "name": "Keyboard focus reaches a control",
+      "passed": true
+    },
+    {
+      "name": "No browser errors",
+      "passed": true
+    },
+    {
+      "name": "No unexpected external network",
+      "passed": true
+    }
+  ],
+  "metrics": {
+    "cls": 0,
+    "lcp": 1188,
+    "navigation": {
+      "name": "http://localhost:8765/",
+      "entryType": "navigation",
+      "startTime": 0,
+      "duration": 661.1999999997206,
+      "navigationId": 5421,
+      "initiatorType": "navigation",
+      "deliveryType": "",
+      "nextHopProtocol": "http/1.0",
+      "renderBlockingStatus": "non-blocking",
+      "contentType": "text/html",
+      "contentEncoding": "",
+      "workerStart": 0,
+      "workerRouterEvaluationStart": 0,
+      "workerCacheLookupStart": 0,
+      "workerMatchedSourceType": "",
+      "workerFinalSourceType": "",
+      "redirectStart": 0,
+      "redirectEnd": 0,
+      "fetchStart": 0.19999999972060323,
+      "domainLookupStart": 3.6999999997206032,
+      "domainLookupEnd": 3.8999999999068677,
+      "connectStart": 3.8999999999068677,
+      "secureConnectionStart": 0,
+      "connectEnd": 4,
+      "requestStart": 4.099999999627471,
+      "responseStart": 7.2999999998137355,
+      "firstInterimResponseStart": 0,
+      "finalResponseHeadersStart": 7.2999999998137355,
+      "responseEnd": 11.199999999720603,
+      "transferSize": 1244780,
+      "encodedBodySize": 1244480,
+      "decodedBodySize": 1244480,
+      "responseStatus": 200,
+      "serverTiming": [],
+      "unloadEventStart": 0,
+      "unloadEventEnd": 0,
+      "domInteractive": 661.0999999996275,
+      "domContentLoadedEventStart": 661.0999999996275,
+      "domContentLoadedEventEnd": 661.1999999997206,
+      "domComplete": 661.1999999997206,
+      "loadEventStart": 661.1999999997206,
+      "loadEventEnd": 661.1999999997206,
+      "type": "navigate",
+      "redirectCount": 0,
+      "activationStart": 0,
+      "criticalCHRestart": 0,
+      "notRestoredReasons": null,
+      "confidence": {
+        "randomizedTriggerRate": 0.4994798,
+        "value": "high"
+      }
+    },
+    "render": {
+      "samples": 6,
+      "drawMedianMs": 0.5,
+      "drawP95Ms": 0.7999999998137355
+    }
+  },
+  "errors": [],
+  "network": [],
+  "environment": "Headless Chromium, localhost, warm local hardware. Not field p75 CWV or real mobile Safari."
+}
