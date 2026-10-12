@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),crypto=require('node:crypto'),{approveRequest}=require('./integration-contract.cjs');
+const request={kind:'animation',provider:'venice',model:'trial-model',prompt:'Locked camera, gentle water and glass light.',ownerId:'test-owner',idempotencyKey:'test-once',duration:5,resolution:'720p',audio:false};
+const quote={currency:'USD',amount:.25,expiresAt:Date.now()+60000,requestHash:crypto.createHash('sha256').update(JSON.stringify(request)).digest('hex')};
+const approval={enabled:true,models:['venice:trial-model'],maxJobUSD:.50};
+assert.throws(()=>approveRequest(request,quote,null),/NOT_APPROVED/);
+assert.throws(()=>approveRequest({...request,model:'fallback'},quote,approval),/MODEL_NOT_APPROVED/);
+assert.throws(()=>approveRequest(request,{...quote,amount:.51},approval),/COST_LIMIT/);
+assert.throws(()=>approveRequest({...request,duration:10},quote,approval),/MISMATCH/);
+assert.throws(()=>approveRequest(request,{...quote,expiresAt:0},approval),/INVALID_QUOTE/);
+assert.equal(approveRequest(request,quote,approval).outboundEnabled,false);
+console.log('6 offline contract assertions passed; no outbound calls.');

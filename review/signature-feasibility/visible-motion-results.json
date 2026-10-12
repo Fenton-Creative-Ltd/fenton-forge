@@ -1,0 +1,21 @@
+[
+  {
+    "file": "index.html",
+    "cameraTransform": "none",
+    "canvasPixelsChanged": true,
+    "phaseBefore": 1.035,
+    "phaseAfter": 7.015000000000009,
+    "frames": 61
+  },
+  {
+    "file": "independent-example.html",
+    "cameraTransform": "none",
+    "canvasPixelsChanged": true,
+    "phaseBefore": 0.886635,
+    "phaseAfter": 7.076454999999991,
+    "frames": 82
+  },
+  {
+    "reducedMotion": "camera and procedural scene static confirmed"
+  }
+]
