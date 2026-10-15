@@ -1,8 +1,8 @@
-# Fenton Forge release ledger — 15 October 2026
+# Fenton Forge release ledger
 
 ## Scope
 
-- Target date: Friday 16 October 2026, controlled early access.
+- Target date: next controlled early-access after product-owner approval.
 - Success path: Discover → Imagine → Transform → Customise → Export.
 - Final output: one independent HTML file with no external runtime dependencies.
 - Excluded from this release: accounts, remote AI generation, managed hosting, subscriptions, payment processing.

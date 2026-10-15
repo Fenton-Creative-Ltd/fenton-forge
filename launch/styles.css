@@ -61,7 +61,7 @@ h3{font-size:1.28rem;line-height:1.25;margin:15px 0 8px}
 .legal p,.legal li{color:var(--muted)}
 footer{border-top:1px solid var(--line);background:#0d1522}
 .foot{padding:26px 0;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.82rem}
-@media(max-width:960px){
+@media(max-width:900px){
  .topbar{flex-direction:column;align-items:flex-start}
  .hero,.section{padding:70px 0}
  .cards,.builder-layout,.status-grid{grid-template-columns:1fr;gap:18px}

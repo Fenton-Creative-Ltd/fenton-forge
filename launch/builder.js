@@ -287,6 +287,29 @@ if (typeof document !== 'undefined') {
       }
     }));
 
+    const starterWords = {
+      agency: ['bold', 'creative', 'modern'],
+      'small-business': ['friendly', 'simple', 'useful'],
+      'public-sector': ['calm', 'accessible', 'professional']
+    };
+
+    document.querySelectorAll('.card[data-category]').forEach(card => {
+      card.addEventListener('click', () => {
+        const words = starterWords[card.dataset.category];
+        if (!words) return;
+        form.elements.word1.value = words[0];
+        form.elements.word2.value = words[1];
+        form.elements.word3.value = words[2];
+        const transformed = stateFromWords(words);
+        form.elements.palette.value = transformed.palette;
+        form.elements.layout.value = transformed.layout;
+        form.elements.speed.value = transformed.speed;
+        form.elements.accent.value = PALETTES[transformed.palette].accent;
+        preview();
+        status.textContent = 'Starting idea selected.';
+      });
+    });
+
     preview();
   });
 }
