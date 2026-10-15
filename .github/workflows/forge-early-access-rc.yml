@@ -1,0 +1,33 @@
+name: Fenton Forge early-access RC review
+
+on:
+  push:
+    branches:
+      - 'codex/forge-early-access-rc-*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate application module
+        run: node --check launch/builder.js
+      - name: Run journey and safety tests
+        run: node --test tests/forge-journey.test.cjs
+      - name: Confirm deployment payload
+        run:
+          test -s launch/index.html &&
+          test -s launch/builder.js &&
+          test -s launch/styles.css &&
+          test -s launch/README.md
