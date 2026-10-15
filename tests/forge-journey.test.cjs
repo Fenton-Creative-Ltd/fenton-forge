@@ -135,25 +135,17 @@ test('accessibility, mobile and reduced-motion support is present', () => {
   assert.match(read('index.html'), /Skip to content/);
 });
 
-test('starter cards are selectable in the builder', () => {
-  const html = read('index.html');
-  const js = read('builder.js');
-  assert.match(html, /data-category="agency"/);
-  assert.match(html, /data-category="small-business"/);
-  assert.match(html, /data-category="public-sector"/);
-  assert.match(js, /starterWords/);
-  assert.match(js, /addEventListener\('click'/);
-  assert.match(js, /form\.elements\.word1/);
-});
-
-test('starter cards are selectable in the builder', () => {
+test('starter cards are semantic and selectable in the builder', () => {
   const html = read('index.html');
   const js = read('builder.js');
   for (const category of ['agency', 'small-business', 'public-sector']) {
     assert.match(html, new RegExp(`data-category="${category}"`));
-    assert.match(js, new RegExp(`starterWords\\.${category.replace(/-/g, '\\-')}|starterWords\\['${category}'\\]`));
   }
-  assert.match(js, /addEventListener\('click'/);
+  assert.match(html, /<button type="button" class="card" data-category="agency">/);
+  assert.match(html, /<button type="button" class="card" data-category="small-business">/);
+  assert.match(html, /<button type="button" class="card" data-category="public-sector">/);
+  assert.match(js, /starterWords/);
+  assert.match(js, /card\.addEventListener\('click'/);
   assert.match(js, /form\.elements\.word1/);
   assert.ok(!fs.existsSync(path.join(folder, 'index.css')));
 });
@@ -166,7 +158,7 @@ test('no external assets in launch application', () => {
   }
 });
 
-test('starter cards are selectable in the builder', () => {
+test('starter cards are semantic and selectable in the builder', () => {
   const html = read('index.html');
   const js = read('builder.js');
   for (const category of ['agency', 'small-business', 'public-sector']) {
