@@ -146,6 +146,18 @@ test('starter cards are selectable in the builder', () => {
   assert.match(js, /form\.elements\.word1/);
 });
 
+test('starter cards are selectable in the builder', () => {
+  const html = read('index.html');
+  const js = read('builder.js');
+  for (const category of ['agency', 'small-business', 'public-sector']) {
+    assert.match(html, new RegExp(`data-category="${category}"`));
+    assert.match(js, new RegExp(`starterWords\\.${category.replace(/-/g, '\\-')}|starterWords\\['${category}'\\]`));
+  }
+  assert.match(js, /addEventListener\('click'/);
+  assert.match(js, /form\.elements\.word1/);
+  assert.ok(!fs.existsSync(path.join(folder, 'index.css')));
+});
+
 test('no external assets in launch application', () => {
   for (const file of ['index.html', 'styles.css']) {
     const text = read(file);
