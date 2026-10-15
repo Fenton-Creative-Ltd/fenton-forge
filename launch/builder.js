@@ -123,12 +123,14 @@ function sceneStyles(state) {
 @keyframes rise{from{transform:translateY(0)}to{transform:translateY(-360px)}}`;
 }
 
-function attributes(source) {
-  const text = (key) => typeof source[key] === 'object' ? JSON.stringify(source[key]) : String(source[key]);
-  return Array.from(['layout', 'palette', 'words', 'name', 'headline', 'about', 'services', 'email', 'accent', 'layout-style', 'motion', 'speed', 'seed'], key => {
-    const camel = key.replace(/-([a-z])/g, (match, lowercase) => lowercase.toUpperCase());
-    return `data-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}="${escapeHTML(text(source[camel]))}"`;
-  }).join(' ');
+function dataAttributes(site) {
+  const entries = [
+    ['layout', site.layout], ['palette', site.palette], ['words', site.words.join(', ')],
+    ['name', site.name], ['headline', site.headline], ['about', site.about],
+    ['services', site.services.join('\n')], ['email', site.email], ['accent', site.accent],
+    ['layout-style', site.layoutStyle], ['motion', site.motion], ['speed', site.speed], ['seed', site.seed]
+  ];
+  return entries.map(([key, value]) => `data-${key.replace(/[A-Z]/g, character => '-' + character.toLowerCase())}="${escapeHTML(value)}"`).join(' ');
 }
 
 function buildHTML(input) {
@@ -146,8 +148,6 @@ function buildHTML(input) {
   const visualNote = site.motion === 'calm'
     ? 'Motion is deliberately reduced and the same layout works with a system preference for reduced motion.'
     : 'The visual environment is created from the selected words. It is deterministic, portable and can be edited in plain HTML.';
-  const data = [`data-layout="${site.layout}"`, `data-palette="${site.palette}"`, `data-layout-style="${site.layoutStyle}"`, `data-motion="${site.motion}"`, `data-speed="${site.speed}"`, `data-seed="${site.seed}"`].join(' ');
-  const copyAlign = site.layoutStyle === 'centred' ? 'text-align:center;text-align:center' : 'text-align:left;text-align:left';
 
   return [
     '<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">',
@@ -170,7 +170,7 @@ function buildHTML(input) {
     '@media(prefers-reduced-motion:reduce){.motion-layer,.motes span{animation:none!important;transform:none!important}}',
     sceneStyles(site),
     '</style></head><body><header class="wrap brand">' + name + '</header>',
-    '<main><div class="scene"><div class="motion-layer" aria-hidden="true"></div><div class="motion-layer secondary" aria-hidden="true"></div><div class="motes" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>',
+    '<main><div class="scene"' + dataAttributes(site) + '><div class="motion-layer" aria-hidden="true"></div><div class="motion-layer secondary" aria-hidden="true"></div><div class="motes" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>',
     '<div class="wrap"><div class="copy"><p class="eyebrow">WELCOME TO ' + upperName + '</p><h1>' + headline + '</h1><p>' + about + '</p>' + contact + '</div></div></div></main>',
     '<section class="wrap services-area"><p class="eyebrow">WHAT WE OFFER</p><h2>What we can do for you</h2><ul>' + services + '</ul></section>',
     '</main><footer><div class="wrap">&copy; ' + new Date().getFullYear() + ' ' + name + ' · Made with Fenton Forge · Visual words: ' + words + '</div></footer>',
@@ -193,7 +193,7 @@ const DEFAULT_SERVICE_STATE = {
   words: ['calm', 'friendly', 'modern']
 };
 
-module.exports = { DEFAULT_SERVICE_STATE, escapeHTML, validatedState, stateFromWords, buildHTML, sceneStyles, PALETTES, LAYOUTS, LAYOUT_STYLES, MOTIONS };
+if (typeof module !== 'undefined') module.exports = { DEFAULT_SERVICE_STATE, escapeHTML, validatedState, stateFromWords, buildHTML, sceneStyles, dataAttributes, PALETTES, LAYOUTS, LAYOUT_STYLES, MOTIONS };
 
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
