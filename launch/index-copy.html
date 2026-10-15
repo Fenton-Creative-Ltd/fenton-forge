@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Fenton Forge early-access release candidate: discover, imagine, transform, customise and export a website locally in your browser.">
+<meta name="theme-color" content="#06131e">
+<title>Fenton Forge | Discover · Imagine · Transform · Customise · Export</title>
+<link rel="stylesheet" href="./styles.css">
+<script defer src="./builder.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="#main"><span class="brand-icon">F</span><span>FENTON <b>FORGE</b><small>EARLY-ACCESS RC</small></span></a>
+  <nav aria-label="Main navigation">
+    <a href="#discover">Discover</a>
+    <a href="#imagine">Imagine</a>
+    <a href="#transform">Transform</a>
+    <a href="#customise">Customise</a>
+    <a href="#export">Export</a>
+  </nav>
+</header>
+<main id="main">
+<section class="container section" id="discover">
+  <p class="eyebrow">Step 1 · Discover</p>
+  <h1>Build something <em>worth sharing.</em></h1>
+  <p class="lead">Fenton Forge is a browser-only creative workspace. Discover an idea, imagine three words, transform the visual world, customise the copy, and export a standalone HTML file.</p>
+</section>
+<section class="container section" id="imagine">
+  <p class="eyebrow">Step 2 · Imagine</p>
+  <h2>Three words</h2>
+  <form id="imagine-form">
+    <div class="field-row"><label>Pick three words<input id="word1" required><input id="word2" required><input id="word3" required></label></div>
+    <button type="submit" id="transform">Transform</button>
+    <button type="button" id="reset-world" class="ghost">Reset</button>
+  </form>
+  <p class="small" id="transform-status">Three words create a deterministic local transformation.</p>
+</section>
+<section class="container section" id="transform">
+  <p class="eyebrow">Step 3 · Transform</p>
+  <h2>Your visual world</h2>
+  <div class="scene"><div class="world" data-world="signature"></div></div>
+</section>
+<section class="container section" id="customise">
+  <p class="eyebrow">Step 4 · Customise</p>
+  <h2>Make it yours</h2>
+  <form id="site-form">
+    <label>Name<input id="name" value="Your Business"></label>
+    <label>Headline<input id="headline" value="A better way to do great work"></label>
+    <label>Description<textarea id="description">We bring care, experience and practical thinking to every project.</textarea></label>
+    <label>Services<textarea id="services">Friendly advice
+Thoughtful delivery
+Reliable support</textarea></label>
+    <label>Accent<input id="accent" value="#67dbf0"></label>
+  </form>
+</section>
+<section class="container section" id="export">
+  <p class="eyebrow">Step 5 · Export</p>
+  <h2>Take your file</h2>
+  <button id="export" class="button primary">Download HTML ↓</button>
+</section>
+<section class="container section">
+  <h2>Preview</h2>
+  <iframe id="site-preview" title="Preview of your generated website" sandbox=""></iframe>
+</section>
+</main>
+<footer>
+  <div class="container foot"><span>© 2026 Fenton Creative Ltd · RC</span><a href="#main">↑</a></div>
+</footer>
+</body>
+</html>
