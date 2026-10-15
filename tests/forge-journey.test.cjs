@@ -135,12 +135,34 @@ test('accessibility, mobile and reduced-motion support is present', () => {
   assert.match(read('index.html'), /Skip to content/);
 });
 
+test('starter cards are selectable in the builder', () => {
+  const html = read('index.html');
+  const js = read('builder.js');
+  assert.match(html, /data-category="agency"/);
+  assert.match(html, /data-category="small-business"/);
+  assert.match(html, /data-category="public-sector"/);
+  assert.match(js, /starterWords/);
+  assert.match(js, /addEventListener\('click'/);
+  assert.match(js, /form\.elements\.word1/);
+});
+
 test('no external assets in launch application', () => {
   for (const file of ['index.html', 'styles.css']) {
     const text = read(file);
     assert.ok(!/src="https?:\/\//.test(text), file);
     assert.ok(!/href="https?:\/\//.test(text), file);
   }
+});
+
+test('starter cards are selectable in the builder', () => {
+  const html = read('index.html');
+  const js = read('builder.js');
+  for (const category of ['agency', 'small-business', 'public-sector']) {
+    assert.match(html, new RegExp(`data-category="${category}"`));
+    assert.match(js, new RegExp(`starterWords\\.${category.replace(/-/g, '\\-')}|starterWords\\['${category}'\\]`));
+  }
+  assert.match(js, /addEventListener\('click'/);
+  assert.match(js, /form\.elements\.word1/);
 });
 
 test('no secret-like strings in release payload', () => {
