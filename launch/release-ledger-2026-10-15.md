@@ -2,43 +2,56 @@
 
 ## Scope
 
-- Target: controlled early access on Friday 16 October 2026.
-- Success path: `Discover → Imagine → Transform → Customise → Export`.
-- Output: one independent HTML file.
-- Excluded from this release: accounts, remote AI, managed hosting, subscriptions, payment processing.
+- Target date: Friday 16 October 2026, controlled early access.
+- Success path: Discover → Imagine → Transform → Customise → Export.
+- Final output: one independent HTML file with no external runtime dependencies.
+- Excluded from this release: accounts, remote AI generation, managed hosting, subscriptions, payment processing.
 
 ## Implemented
 
 - Browser-only launch application.
 - Three-word deterministic starter style.
 - Transform and customise controls for palette, layout, accent, motion, speed, content and contact details.
-- Full local preview in a sandboxed frame.
-- Independent HTML export with inline styles and inline SVG.
-- Strict exported-page policy and escaped text.
+- Full live preview in a sandboxed editor frame.
+- Independent HTML export with self-contained styles and visual data.
+- Strict export policy, escaping and input limits.
 - Mobile and reduced-motion styles.
-- Automated regression tests.
+- Accessibility affordances including skip link, visible focus and live status text.
+- Automated journey, safety and dependency tests.
 
-## Confirmed in this branch
+## Confirmed
 
-- The launch application is in `launch/`.
-- The builder is browser-only and does not call Fenton services.
-- The release notes and deployment plan are explicit about unavailable features.
-
-## Verified after push
-
-- To be filled from local and automated checks.
+- The branch contains the actual launch application, not an earlier prototype.
+- The builder is browser-only and makes no network requests.
+- Export is a standalone HTML file.
+- Automated tests pass.
+- Basic browser review confirms launch, Discover, Imagine, Transform, Customise, Export and independent offline rendering.
+- Mobile responsiveness and reduced-motion support are present.
+- No external requests or exposed secrets were detected in the launch payload.
 
 ## Unverified
 
-- Real Safari behaviour.
-- Real iPhone/iPad behaviour.
-- Full keyboard traversal and screen-reader behaviour.
+- Real Safari behaviour on macOS.
+- Real iPhone or iPad behaviour.
+- Complete keyboard traversal and screen-reader review.
 - Contrast across every custom palette.
-- Production network performance and sustained motion performance.
-- Final brand/legal wording approval.
+- Production network performance and older-device performance.
+- Final legal and brand wording approval.
 
 ## Blockers
 
-- Product-owner approval is required for any deployment.
-- Merge into `main` requires separate approval.
-- Staging URL availability and Hostinger rollout decision require separate approval.
+- Explicit product-owner approval is required for any deployment.
+- Merge into main requires separate approval.
+- Staging domain and Hostinger rollout require separate approval.
+- A final independent file should be opened outside the builder after the user confirms the preferred example state.
+
+## Controlled rollout plan
+
+1. Review and approve the release candidate.
+2. Provide or confirm a dedicated staging subdomain.
+3. Publish only the contents of `launch/` to that location.
+4. Smoke-test the site over HTTPS, then run Safari and iPhone journeys.
+5. If approved, send controlled links and keep `index,follow` until full approval.
+6. If anything goes wrong, restore the previous Hostinger website package and leave repository unchanged.
+
+This plan does not change Hostinger services until the product-owner gives explicit approval.
