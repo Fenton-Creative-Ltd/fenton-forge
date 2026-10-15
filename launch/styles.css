@@ -33,7 +33,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 h2{font-size:clamp(1.8rem,4.4vw,3rem);letter-spacing:-.045em;line-height:1.15;margin:14px 0 24px}
 h3{font-size:1.28rem;line-height:1.25;margin:15px 0 8px}
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:34px;list-style:none;padding:0}
-.card{background:linear-gradient(155deg,#172437,#111d2d);border:1px solid var(--line);border-radius:18px;padding:27px;min-height:220px}
+.card{background:linear-gradient(155deg,#172437,#111d2d);border:1px solid var(--line);border-radius:18px;padding:27px;min-height:220px;text-align:left;font:inherit;color:var(--fg);appearance:none;cursor:pointer}
 .card p,.status-grid p{color:var(--muted)}
 .number{color:var(--gold);font-size:.75rem;letter-spacing:.1em;font-weight:850}
 .status-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px}
