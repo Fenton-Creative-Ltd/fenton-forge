@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Fenton Forge early-access release candidate. Choose three words, transform them into a visual style, preview your page and export an independent HTML file.">
+<title>Fenton Forge · Early-access</title>
+<link rel="stylesheet" href="./styles.css">
+<script defer src="./builder.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar"><div class="container"><a class="brand" href="#main"><span class="brand-icon">F</span><span>FENTON <b>FORGE</b><small>Early-access release candidate</small></span></a><nav aria-label="Main navigation"><a href="#discover">Discover</a><a href="#how">How it works</a><a href="#builder">Builder</a></nav></div></header>
+<main id="main">
+<section class="hero"><div class="container">
+<p class="eyebrow">Controlled early access</p>
+<h1>Start with three <em>words.</em></h1>
+<p class="lead">Choose your starting idea, use three words to transform a visual style, customise it and export an independent HTML file — all in your browser.</p>
+<div class="actions"><a class="button primary" href="#builder">Open the builder ↗</a><a class="button ghost" href="#how">How it works</a></div>
+<p class="fine">No accounts. No payments. No network requests from the builder. No AI generation.</p>
+</div></section>
+<section id="discover" class="section container"><p class="eyebrow">Discover</p><h2>Start from a clear idea.</h2><p>Pick a project type below; the builder will use it to suggest content and visual words.</p><div class="cards"><button type="button" class="card" data-category="agency"><span class="number">Agency</span><h3>Creative ideas, calm presentation</h3><p>Start with bold, creative, modern.</p></button><button type="button" class="card" data-category="small-business"><span class="number">Small Business</span><h3>Practical, friendly, easy to use</h3><p>Start with friendly, simple, useful.</p></button><button type="button" class="card" data-category="public-sector"><span class="number">Public Sector</span><h3>Calm, accessible and purposeful</h3><p>Start with calm, accessible, professional.</p></button></div></section>
+<section id="how" class="section container"><p class="eyebrow">How it works</p><h2>Five steps, one file.</h2><div class="cards"><article class="card"><span class="number">Discover</span><h3>Find your idea</h3><p>Choose a starting point and use three words to shape the visual.</p></article><article class="card"><span class="number">Imagine</span><h3>Turn three words into a visual idea</h3><p>The same words always produce the same starting style.</p></article><article class="card"><span class="number">Transform</span><h3>Create the visual</h3><p>Your words guide the palette, motion style, speed and seed.</p></article><article class="card"><span class="number">Customise</span><h3>Edit the details</h3><p>Change the name, headline, description, services, contact details, palette, accent, layout and motion.</p></article><article class="card"><span class="number">Export</span><h3>Download independent HTML</h3><p>Get one self-contained HTML file with your content, visual style and no external requests.</p></article></div></section>
+<section id="builder" class="builder-anchor"><div class="container"><div class="page-heading"><p class="eyebrow">Browser-only builder</p><h1>Build and export your page.</h1><p class="lead">Add three words, transform the visual, then customise the content. Everything stays on this device.</p></div><div class="builder-layout">
+<section class="panel" aria-labelledby="form-title"><h2 id="form-title">Website details</h2><form id="site-form">
+<label class="field" for="word1">Word 1<input id="word1" name="word1" type="text" maxlength="40" required autocomplete="off" value="calm"></label>
+<label class="field" for="word2">Word 2<input id="word2" name="word2" type="text" maxlength="40" required autocomplete="off" value="friendly"></label>
+<label class="field" for="word3">Word 3<input id="word3" name="word3" type="text" maxlength="40" required autocomplete="off" value="modern"></label>
+<button id="transform" type="button" class="button secondary">Transform the visual</button>
+<label class="field" for="name">Name of website or organisation<input id="name" name="name" type="text" maxlength="80" required autocomplete="organization" value="Haven Studio"></label>
+<label class="field" for="headline">Headline<input id="headline" name="headline" type="text" maxlength="130" required value="A world made by you"></label>
+<label class="field" for="about">About your organisation<textarea id="about" name="about" maxlength="700" required rows="5">We turn a clear idea into a warm, useful website. This page is an editable starting point you own.</textarea></label>
+<label class="field" for="services">Services or highlights (one per line)<textarea id="services" name="services" maxlength="900" rows="4">Creative thinking
+Beautiful results
+Personal service</textarea></label>
+<label class="field" for="email">Email contact (optional)<input id="email" name="email" type="email" maxlength="180" autocomplete="email" value="hello@example.com" placeholder="hello@example.com"></label>
+<label class="field" for="palette">Visual palette<select id="palette" name="palette"><option value="ocean">Ocean</option><option value="violet">Violet</option><option value="ember">Ember</option><option value="forest">Forest</option><option value="dawn">Dawn</option><option value="graphite">Graphite</option><option value="amber">Amber</option><option value="frost">Frost</option></select></label>
+<label class="field" for="layout">Motion style<select id="layout" name="layout"><option value="waves">Waves</option><option value="particles">Particles</option><option value="aurora">Aurora</option><option value="grid">Grid</option></select></label>
+<label class="field" for="accent">Brand accent<input id="accent" name="accent" type="color" value="#34d2cf"></label>
+<label class="field" for="layoutStyle">Layout style<select id="layoutStyle" name="layoutStyle"><option value="centred">Centred and calm</option><option value="editorial">Left-aligned editorial</option></select></label>
+<label class="field" for="motion">Motion preference<select id="motion" name="motion"><option value="standard">Standard</option><option value="calm">Calm</option></select></label>
+<label class="field" for="speed">Motion speed<input id="speed" name="speed" type="range" min="0.25" max="1.6" step="0.01" value="0.82"></label>
+<div class="actions"><button type="submit" class="button primary">Update preview</button><button id="download" type="button" class="button ghost">Download HTML ↓</button></div>
+<p id="status" class="fine" role="status" aria-live="polite">Preview refreshed. Your content and visual words stay on this device.</p>
+</form></section>
+<section class="panel" aria-labelledby="preview-title"><h2 id="preview-title">Your transformed website</h2><iframe id="site-preview" title="Preview of your generated website" sandbox="" class="preview-frame"></iframe><p class="fine">The exported HTML is a self-contained starting point. It does not include hosting, publishing, support or a live contact form.</p></section>
+</div></div></section>
+</main>
+<footer><div class="container"><div class="foot"><span>&copy; 2026 Fenton Creative Ltd. Early-access preview.</span><span>Browser-only. No remote AI. No payments. No external requests.</span></div></div></footer>
+</body></html>
